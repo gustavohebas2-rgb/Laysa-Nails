@@ -323,6 +323,34 @@
     });
   }
 
+  // Small "apelido" badge shown next to a client's name in admin views, when
+  // this appointment's CPF matches a saved nickname (see state.nicknameByCpf).
+  function nicknameBadge(cpf){
+    var nick = cpf && state.nicknameByCpf[cpf];
+    if(!nick) return '';
+    return ' <span class="badge" style="background:var(--accent-soft); color:var(--accent);">'+escapeHtml(nick)+'</span>';
+  }
+  // "+ Apelido" / "Editar apelido" button for an appointment row — lets the
+  // professional save a nickname straight from an appointment she already has
+  // open, without needing to know/type the client's CPF herself (it's read
+  // from the appointment behind the scenes). Only shown when the appointment
+  // actually has a CPF on file to attach the nickname to.
+  function nicknameApptButton(a){
+    if(!a.clientCPF) return '';
+    var has = !!state.nicknameByCpf[a.clientCPF];
+    var open = state.forms.nickApptId===a.id;
+    return '<button class="btn btn-outline btn-sm" data-action="'+(open?'closeNicknameFor':'openNicknameFor')+'" data-id="'+a.id+'">'+(open?'Fechar':(has?'Editar apelido':'+ Apelido'))+'</button>';
+  }
+  function nicknameApptForm(a){
+    var f = state.forms;
+    if(f.nickApptId!==a.id) return '';
+    return '<div style="flex:1 0 100%; margin-top:10px; padding-top:10px; border-top:1px dashed var(--line);">'+
+      '<div class="field"><label>Apelido para '+escapeHtml(a.clientName||'esta cliente')+'</label><input type="text" id="f-nickInlineLabel" value="'+escapeHtml(f.nickInlineLabel)+'" placeholder="ex: Gustavo irmão"></div>'+
+      (f.nickInlineError ? '<div class="banner warn">'+escapeHtml(f.nickInlineError)+'</div>' : '')+
+      '<button class="btn btn-primary btn-sm" data-action="saveNicknameForAppt" data-id="'+a.id+'">Salvar apelido</button>'+
+    '</div>';
+  }
+
   // ---------- lembrar cliente neste aparelho ----------
   // Guarda nome/CPF/telefone no navegador do próprio cliente (não vai para o
   // banco de dados) para não pedir os dados de novo a cada visita, nem exigir
@@ -485,6 +513,30 @@
     return Array.from(new Uint8Array(buf)).map(function(b){return b.toString(16).padStart(2,'0');}).join('');
   }
 
+  // Nicknames are stored as {cpfHash, nickname} — the raw CPF is never kept
+  // (see state.nicknames). render() is synchronous, so instead of hashing
+  // during render, this walks every distinct CPF already visible in
+  // state.appointments, hashes each one, and checks it against the saved
+  // hashes, building a plain lookup dict (state.nicknameByCpf) that render()
+  // can read synchronously. Called whenever appointments or nicknames change.
+  var nicknameRecomputeToken = 0;
+  async function recomputeNicknameLookup(){
+    var myToken = ++nicknameRecomputeToken;
+    if(!state.nicknames.length){ state.nicknameByCpf = {}; render(); return; }
+    var hashToNick = {};
+    state.nicknames.forEach(function(n){ if(n.cpfHash) hashToNick[n.cpfHash] = n.nickname; });
+    var cpfs = Object.keys(state.appointments.reduce(function(acc,a){ if(a.clientCPF) acc[a.clientCPF]=true; return acc; }, {}));
+    var result = {};
+    for(var i=0;i<cpfs.length;i++){
+      var cpf = cpfs[i];
+      var hash = await sha256Hex(cpf);
+      if(hashToNick[hash]) result[cpf] = hashToNick[hash];
+    }
+    if(myToken!==nicknameRecomputeToken) return; // a newer recompute superseded this one
+    state.nicknameByCpf = result;
+    render();
+  }
+
   var WEEKDAY_ORDER = [1,2,3,4,5,6,0];
   var WEEKDAY_NAME = {0:'Domingo',1:'Segunda-feira',2:'Terça-feira',3:'Quarta-feira',4:'Quinta-feira',5:'Sexta-feira',6:'Sábado'};
   // Default owner login, protected as a hash (never the plain password) — change anytime in Configurações.
@@ -521,6 +573,8 @@
     appointments: [],
     blocks: [],
     recurringBlocks: [],
+    nicknames: [], // {id, cpfHash, nickname, createdAt} — never the raw CPF
+    nicknameByCpf: {}, // normalized CPF digits -> nickname, rebuilt async whenever appointments/nicknames change
     expenses: [],
     financeAppointments: [],
     receivedAppointments: [],
@@ -538,6 +592,9 @@
       editingServiceId:null, editName:'', editPrice:'', editDuration:'', editPhotoIds:[], editPhotoUploading:false,
       newBlockDate: todayStr(), newBlockAllDay:true, newBlockRecurring:false, newBlockStart:'12:00', newBlockEnd:'13:00', newBlockReason:'', newBlockError:'',
       newApptName:'', newApptCPF:'', newApptPhone:'', newApptServiceIds:[], newApptTime:'', newApptCustomTime:'', newApptError:'',
+      agendaSearch:'',
+      nickCPF:'', nickLabel:'', nickError:'',
+      nickApptId:null, nickInlineLabel:'', nickInlineError:'',
       rescheduleApptId:null, rescheduleDate:'', rescheduleTime:'', rescheduleCustomTime:'', rescheduleError:'',
       newExpenseDesc:'', newExpenseAmount:'', newExpenseDate: todayStr(), newExpenseError:'',
       settingsSalonName:'', settingsSaved:false,
@@ -896,6 +953,12 @@
       knownApptIds = new Set(newList.map(function(a){ return a.id; }));
       state.appointments = newList;
       render();
+      recomputeNicknameLookup();
+    }, function(){});
+
+    db.collection('nicknames').onSnapshot(function(snap){
+      state.nicknames = snap.docs.map(function(d){ var v=d.data(); v.id=d.id; return v; });
+      recomputeNicknameLookup();
     }, function(){});
 
     db.collection('blocks').where('date','>=',today).orderBy('date','asc').limit(200).onSnapshot(function(snap){
@@ -1285,6 +1348,46 @@
       '<button class="btn btn-outline btn-sm" data-action="toggleNewAppt">'+(state.admin.showNewAppt?'Cancelar':'+ Novo agendamento')+'</button>'+
     '</div>';
 
+    html += '<div class="card">'+
+      '<div class="field"><label>Buscar cliente por nome</label><input type="text" id="f-agendaSearch" value="'+escapeHtml(f.agendaSearch)+'" placeholder="Digite o nome da cliente..."></div>'+
+    '</div>';
+    var searchQ = f.agendaSearch.trim().toLowerCase();
+    if(searchQ){
+      var searchResults = state.appointments.filter(function(a){
+        if(a.status==='cancelled') return false;
+        var nick = (a.clientCPF && state.nicknameByCpf[a.clientCPF]) || '';
+        return (a.clientName||'').toLowerCase().indexOf(searchQ)!==-1 || nick.toLowerCase().indexOf(searchQ)!==-1;
+      }).sort(function(a,b){ return (a.date+a.startTime).localeCompare(b.date+b.startTime); });
+      html += '<div class="card"><h3>Resultados da busca</h3>'+
+        (searchResults.length ? searchResults.map(function(a){
+          return '<div class="appt-row">'+
+            '<div><div class="appt-time">'+formatDateShort(a.date)+' · '+a.startTime+'</div>'+
+            '<div style="font-size:.85rem;">'+escapeHtml(a.serviceName)+' · '+escapeHtml(a.clientName||'')+nicknameBadge(a.clientCPF)+(a.clientPhone?' · '+escapeHtml(a.clientPhone):'')+'</div>'+
+            '</div>'+
+            '<div class="row" style="gap:6px; flex-wrap:wrap;"><button class="btn btn-outline btn-sm" data-action="setAdminDate" data-date="'+a.date+'">Ver o dia</button>'+nicknameApptButton(a)+'</div>'+
+            nicknameApptForm(a)+
+          '</div>';
+        }).join('') : '<div class="empty">Nenhuma cliente encontrada com esse nome.</div>')+
+      '</div>';
+    }
+
+    html += '<div class="card">'+
+      '<h3>Apelidos de clientes</h3>'+
+      '<p class="muted" style="font-size:.82rem;">Dica: você não precisa saber o CPF de cor — é mais fácil clicar em "+ Apelido" direto num agendamento dela (abaixo), que já pega o CPF sozinho. Use este campo só se quiser cadastrar um apelido sem ter um agendamento aberto. De qualquer forma, o CPF nunca é guardado — só um código não reversível dele — e o apelido aparece automaticamente junto ao nome sempre que esse CPF aparecer nos agendamentos.</p>'+
+      '<div class="grid2">'+
+        '<div class="field"><label>CPF</label><input type="text" id="f-nickCPF" value="'+escapeHtml(f.nickCPF)+'" placeholder="000.000.000-00"></div>'+
+        '<div class="field"><label>Apelido</label><input type="text" id="f-nickLabel" value="'+escapeHtml(f.nickLabel)+'" placeholder="ex: Gustavo irmão"></div>'+
+      '</div>'+
+      (f.nickError ? '<div class="banner warn">'+escapeHtml(f.nickError)+'</div>' : '')+
+      '<button class="btn btn-outline btn-sm" data-action="addNickname">Salvar apelido</button>'+
+      (state.nicknames.length ? '<div class="stack" style="margin-top:10px;">'+state.nicknames.map(function(n){
+        return '<div class="row between" style="padding:8px 0; border-bottom:1px solid var(--line);">'+
+          '<span>'+escapeHtml(n.nickname)+'</span>'+
+          '<button class="btn btn-ghost btn-sm" data-action="deleteNickname" data-id="'+n.id+'">Excluir</button>'+
+        '</div>';
+      }).join('')+'</div>' : '<p class="empty">Nenhum apelido salvo ainda.</p>')+
+    '</div>';
+
     if(state.admin.showNewAppt){
       var adminCart = cartTotals(f.newApptServiceIds);
       var slots = adminCart.duration ? computeSlots(d, adminCart.duration) : [];
@@ -1325,7 +1428,7 @@
         var reschedSlots = reschedOpen ? computeSlots(reschedDateVal, a.durationMinutes||0, a.id) : [];
         return '<div class="appt-row" style="'+(cancelled?'opacity:.55;':'')+'">'+
           '<div><div class="appt-time">'+a.startTime+' – '+minutesToTime(timeToMinutes(a.startTime)+(a.durationMinutes||0))+'</div>'+
-          '<div style="font-size:.85rem;">'+escapeHtml(a.serviceName)+' · '+escapeHtml(a.clientName||'')+(a.clientPhone?' · '+escapeHtml(a.clientPhone):'')+'</div>'+
+          '<div style="font-size:.85rem;">'+escapeHtml(a.serviceName)+' · '+escapeHtml(a.clientName||'')+nicknameBadge(a.clientCPF)+(a.clientPhone?' · '+escapeHtml(a.clientPhone):'')+'</div>'+
           (cancelled ? '<span class="badge badge-off">Cancelado</span>' : '')+
           '</div>'+
           '<div class="row" style="gap:6px; flex-wrap:wrap;">'+
@@ -1335,7 +1438,9 @@
           (!cancelled ? '<button class="btn btn-outline btn-sm" data-action="'+(reschedOpen?'closeReschedule':'openReschedule')+'" data-id="'+a.id+'">'+(reschedOpen?'Fechar':'Alterar horário')+'</button>' : '')+
           (cancelled ? '' : '<button class="btn btn-danger btn-sm" data-action="cancelAppt" data-id="'+a.id+'">Desmarcar</button>')+
           '<button class="btn btn-ghost btn-sm" data-action="deleteAppt" data-id="'+a.id+'">Excluir</button>'+
+          nicknameApptButton(a)+
           '</div>'+
+          nicknameApptForm(a)+
           (reschedOpen ? (
             '<div style="flex:1 0 100%; margin-top:10px; padding-top:10px; border-top:1px dashed var(--line);">'+
               '<div class="field" style="max-width:220px;"><label>Nova data</label><input type="date" id="f-rescheduleDate" value="'+reschedDateVal+'"></div>'+
@@ -1935,6 +2040,7 @@
       var time3 = f.newApptCustomTime.trim() || f.newApptTime;
       if(!adminCartS.items.length){ f.newApptError='Escolha ao menos um serviço.'; render(); return; }
       if(!name3){ f.newApptError='Informe o nome do cliente.'; render(); return; }
+      if(f.newApptCPF.trim() && !isValidCPF(f.newApptCPF)){ f.newApptError='CPF inválido. Confira os números (ou deixe em branco).'; render(); return; }
       if(!time3 || !/^\d{1,2}:\d{2}$/.test(time3)){ f.newApptError='Escolha ou digite um horário válido.'; render(); return; }
       var hh=time3.split(':'); time3 = pad2(+hh[0])+':'+pad2(+hh[1]);
       writeAppointment({
@@ -1998,6 +2104,70 @@
       askConfirm('Excluir este agendamento permanentemente?', function(){
         state.db.collection('appointments').doc(idd).delete().catch(function(){});
       }, {danger:true});
+      return;
+    }
+    if(action==='setAdminDate'){
+      state.admin.selectedDate = el.getAttribute('data-date');
+      f.agendaSearch='';
+      render();
+      return;
+    }
+    if(action==='addNickname'){
+      var nickCpfDigits = onlyDigits(f.nickCPF);
+      var nickLabelTrim = f.nickLabel.trim();
+      if(!isValidCPF(f.nickCPF)){ f.nickError='CPF inválido. Confira os números.'; render(); return; }
+      if(!nickLabelTrim){ f.nickError='Digite um apelido.'; render(); return; }
+      f.nickError='';
+      sha256Hex(nickCpfDigits).then(function(hash){
+        return state.db.collection('nicknames').add({cpfHash:hash, nickname:nickLabelTrim, createdAt:new Date().toISOString()});
+      }).then(function(){
+        f.nickCPF=''; f.nickLabel=''; render();
+      }).catch(function(){
+        f.nickError='Não foi possível salvar. Se essa é a primeira vez usando apelidos, confirme se o banco de dados já foi atualizado.';
+        render();
+      });
+      return;
+    }
+    if(action==='deleteNickname'){
+      var nid=el.getAttribute('data-id');
+      askConfirm('Excluir este apelido?', function(){ state.db.collection('nicknames').doc(nid).delete().catch(function(){}); }, {danger:true});
+      return;
+    }
+    if(action==='openNicknameFor'){
+      var apptIdO = el.getAttribute('data-id');
+      var apptO = state.appointments.filter(function(x){ return x.id===apptIdO; })[0];
+      f.nickApptId = apptIdO;
+      f.nickInlineLabel = (apptO && apptO.clientCPF && state.nicknameByCpf[apptO.clientCPF]) || '';
+      f.nickInlineError = '';
+      render();
+      return;
+    }
+    if(action==='closeNicknameFor'){
+      f.nickApptId=null; f.nickInlineError=''; render(); return;
+    }
+    if(action==='saveNicknameForAppt'){
+      // Saves a nickname straight from an appointment already on screen, so
+      // the professional never has to know or type the client's CPF herself
+      // — it's read here from the appointment record (never shown back to
+      // her, never sent anywhere but through the one-way hash below).
+      var apptIdN = el.getAttribute('data-id');
+      var apptN = state.appointments.filter(function(x){ return x.id===apptIdN; })[0];
+      var labelN = f.nickInlineLabel.trim();
+      if(!apptN || !apptN.clientCPF){ f.nickApptId=null; render(); return; }
+      if(!labelN){ f.nickInlineError='Digite um apelido.'; render(); return; }
+      f.nickInlineError='';
+      sha256Hex(apptN.clientCPF).then(function(hash){
+        var existing = state.nicknames.filter(function(n){ return n.cpfHash===hash; })[0];
+        if(existing){
+          return state.db.collection('nicknames').doc(existing.id).update({nickname:labelN});
+        }
+        return state.db.collection('nicknames').add({cpfHash:hash, nickname:labelN, createdAt:new Date().toISOString()});
+      }).then(function(){
+        f.nickApptId=null; f.nickInlineLabel=''; render();
+      }).catch(function(){
+        f.nickInlineError='Não foi possível salvar. Se essa é a primeira vez usando apelidos, confirme se o banco de dados já foi atualizado.';
+        render();
+      });
       return;
     }
 
@@ -2222,6 +2392,22 @@
     if(t.id==='f-newApptCPF'){ f.newApptCPF=applyMask(t, maskCPF); return; }
     if(t.id==='f-newApptPhone'){ f.newApptPhone=applyMask(t, maskPhone); return; }
     if(t.id==='f-newApptCustomTime'){ f.newApptCustomTime=t.value; return; }
+    if(t.id==='f-agendaSearch'){
+      // render() rebuilds the whole #app innerHTML, which would normally
+      // drop focus/caret out of this field on every keystroke — so re-focus
+      // and restore the caret position right after, same spirit as the
+      // caret-preserving trick applyMask() uses for the masked CPF/phone
+      // fields above.
+      f.agendaSearch=t.value;
+      var selPos = t.selectionStart;
+      render();
+      var reEl = document.getElementById('f-agendaSearch');
+      if(reEl){ reEl.focus(); try{ reEl.setSelectionRange(selPos, selPos); }catch(e){} }
+      return;
+    }
+    if(t.id==='f-nickCPF'){ f.nickCPF=applyMask(t, maskCPF); return; }
+    if(t.id==='f-nickLabel'){ f.nickLabel=t.value; return; }
+    if(t.id==='f-nickInlineLabel'){ f.nickInlineLabel=t.value; return; }
     if(t.id==='f-rescheduleCustomTime'){ f.rescheduleCustomTime=t.value; return; }
     if(t.id==='f-settingsSalonName'){ f.settingsSalonName=t.value; return; }
     if(t.id==='f-pwCurrent'){ f.pwCurrent=t.value; return; }
