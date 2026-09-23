@@ -1,0 +1,1953 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Laysa Nails</title>
+<style>
+  :root{
+    --bg:#FAF6F2;
+    --surface:#FFFFFF;
+    --surface-2:#F2E5DF;
+    --ink:#2B1F21;
+    --muted:#87706E;
+    --line:#E6D5CE;
+    --accent:#A15467;
+    --accent-ink:#FFFFFF;
+    --accent-deep:#6B303D;
+    --accent-soft:#F0DEDC;
+    --gold:#96773D;
+    --gold-soft:#F2E7D2;
+    --success:#4C8F6B;
+    --success-bg:#E6F1EA;
+    --danger:#AC4C46;
+    --danger-bg:#F6E7E4;
+    --radius:12px;
+    --shadow:0 1px 2px rgba(43,31,33,.05), 0 10px 26px rgba(43,31,33,.08);
+    color-scheme:light;
+  }
+  /* Laysa Nails keeps one delicate, light palette on purpose — the brand is
+     soft rosé and florals, so the page does not switch to a dark theme even
+     when the viewer's system is set to dark mode. */
+  *{box-sizing:border-box;}
+  body{
+    background-color:var(--bg);
+    background-image:
+      radial-gradient(circle at 6% 0%, rgba(161,84,103,.06) 0%, transparent 40%),
+      radial-gradient(circle at 100% 6%, rgba(150,119,61,.05) 0%, transparent 36%),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220' viewBox='0 0 220 220'%3E%3Cg fill='none' stroke='%23A15467' stroke-width='0.9' opacity='0.06'%3E%3Cg transform='translate(40,40)'%3E%3Cellipse rx='8' ry='15' transform='rotate(0)'/%3E%3Cellipse rx='8' ry='15' transform='rotate(72)'/%3E%3Cellipse rx='8' ry='15' transform='rotate(144)'/%3E%3Cellipse rx='8' ry='15' transform='rotate(216)'/%3E%3Cellipse rx='8' ry='15' transform='rotate(288)'/%3E%3Ccircle r='3.5'/%3E%3C/g%3E%3Cg transform='translate(165,150) scale(0.75)'%3E%3Cellipse rx='8' ry='15' transform='rotate(20)'/%3E%3Cellipse rx='8' ry='15' transform='rotate(92)'/%3E%3Cellipse rx='8' ry='15' transform='rotate(164)'/%3E%3Cellipse rx='8' ry='15' transform='rotate(236)'/%3E%3Cellipse rx='8' ry='15' transform='rotate(308)'/%3E%3Ccircle r='3.5'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    background-repeat:no-repeat,no-repeat,repeat;
+    background-attachment:fixed,fixed,fixed;
+    color:var(--ink); font-family:'Manrope',system-ui,-apple-system,Segoe UI,sans-serif; padding:0 16px; padding-block:0;
+  }
+  h1,h2,h3,.display{font-family:'Fraunces',Georgia,serif; text-wrap:balance;}
+  a{color:var(--accent-deep);}
+  button{font-family:inherit;}
+  .wrap{max-width:720px; margin:0 auto;}
+  header.top{position:sticky; top:env(safe-area-inset-top,0px); z-index:20; background:var(--bg); padding-top:20px; padding-bottom:10px; border-bottom:1px solid var(--line); box-shadow:0 1px 0 var(--gold-soft);}
+  .brand{display:flex; align-items:flex-end; justify-content:space-between; gap:10px; flex-wrap:wrap;}
+  .brand h1{margin:0; font-weight:400; color:var(--accent-deep); display:flex; align-items:center; gap:9px;}
+  .brand h1 svg{width:21px; height:21px; flex:0 0 auto; color:var(--gold); margin-bottom:.2em;}
+  .brand-name{font-family:'Pinyon Script',cursive; font-size:2.6rem; line-height:1; font-weight:400; letter-spacing:.01em;}
+  .brand .tag{font-size:.66rem; color:var(--muted); letter-spacing:.1em; text-transform:uppercase; font-weight:600; margin-bottom:.35em;}
+  nav.tabs{display:flex; gap:4px; margin-top:14px; overflow-x:auto; overflow-y:hidden; -webkit-overflow-scrolling:touch; border-bottom:1px solid var(--line);}
+  nav.tabs:empty{display:none; margin-top:0; border-bottom:none;}
+  nav.tabs button{flex:0 0 auto; border:none; background:transparent; color:var(--muted); padding:8px 14px; border-radius:0; font-size:.83rem; font-weight:700; cursor:pointer; white-space:nowrap; transition:color .15s, border-color .15s; border-bottom:2px solid transparent;}
+  nav.tabs button:hover{color:var(--accent-deep);}
+  nav.tabs button.active{color:var(--accent-deep); border-bottom-color:var(--accent);}
+  main{padding:22px 0 64px;}
+  .card{background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:19px 20px; box-shadow:var(--shadow); margin-bottom:16px;}
+  .card h2{font-size:1.15rem; margin:0 0 13px; font-weight:600; letter-spacing:.005em;}
+  .card h3{font-size:.98rem; margin:0 0 10px; font-weight:700; color:var(--accent-deep);}
+  .muted{color:var(--muted);}
+  .row{display:flex; gap:10px; flex-wrap:wrap; align-items:center;}
+  .row.between{justify-content:space-between;}
+  .stack{display:flex; flex-direction:column; gap:10px;}
+  .grid2{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
+  @media (max-width:480px){.grid2{grid-template-columns:1fr;}}
+  .btn{display:inline-flex; align-items:center; justify-content:center; gap:6px; border-radius:10px; padding:11px 18px; font-weight:700; font-size:.9rem; cursor:pointer; border:1px solid transparent; transition:filter .15s, background .15s, border-color .15s; text-decoration:none;}
+  .btn-primary{background:var(--accent); color:var(--accent-ink); border-color:var(--accent);}
+  .btn-primary:hover{filter:brightness(1.08);}
+  .btn-outline{background:transparent; color:var(--accent-deep); border-color:var(--accent);}
+  .btn-outline:hover{background:var(--accent-soft);}
+  .btn-ghost{background:transparent; color:var(--muted); border-color:transparent; padding:8px 10px;}
+  .btn-ghost:hover{color:var(--accent-deep); background:var(--surface-2);}
+  .btn-danger{background:transparent; color:var(--danger); border-color:var(--danger);}
+  .btn-danger:hover{background:var(--danger-bg);}
+  .btn-whats{background:#1FA855; color:#FFFFFF; border-color:#1FA855;}
+  .btn-whats:hover{filter:brightness(1.08);}
+  .btn-sm{padding:7px 12px; font-size:.78rem; border-radius:8px;}
+  .btn:disabled{opacity:.5; cursor:not-allowed;}
+  .btn-block{width:100%;}
+  label{font-size:.72rem; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:.06em; display:block; margin-bottom:6px;}
+  input[type=text],input[type=tel],input[type=password],input[type=date],input[type=time],input[type=number],select,textarea{
+    width:100%; border:1px solid var(--line); background:var(--bg); color:var(--ink); border-radius:9px; padding:10px 12px; font-size:.93rem; font-family:inherit;
+  }
+  input[type=file]{width:100%; font-size:.85rem; color:var(--muted);}
+  input:focus,select:focus,textarea:focus{outline:2px solid var(--accent); outline-offset:1px;}
+  .field{margin-bottom:13px;}
+  .badge{display:inline-block; font-size:.7rem; font-weight:700; padding:3px 9px; border-radius:999px; letter-spacing:.03em;}
+  .badge-ok{background:var(--success-bg); color:var(--success);}
+  .badge-off{background:var(--danger-bg); color:var(--danger);}
+  .badge-gold{background:var(--gold-soft); color:var(--gold); border:1px solid var(--gold);}
+  .price{font-family:'Fraunces',serif; font-weight:600; color:var(--accent-deep); font-variant-numeric:tabular-nums;}
+  .service-pick{border:1px solid var(--line); border-radius:12px; padding:14px; cursor:pointer; background:var(--surface); transition:border-color .15s, background .15s, box-shadow .15s; display:flex; gap:12px; align-items:flex-start;}
+  .service-pick:hover{border-color:var(--accent); box-shadow:var(--shadow);}
+  .service-pick .price{font-size:1.1rem;}
+  .service-pick .info{flex:1; min-width:0;}
+  .thumb{width:56px; height:56px; object-fit:cover; border-radius:9px; border:1px solid var(--line); flex:0 0 auto; background:var(--surface-2);}
+  .thumb-sm{width:40px; height:40px;}
+  .thumb-preview{display:flex; align-items:center; gap:10px; margin-bottom:10px;}
+  .slots{display:grid; grid-template-columns:repeat(auto-fill,minmax(78px,1fr)); gap:8px;}
+  .slot-btn{border:1px solid var(--line); background:var(--surface); border-radius:8px; padding:9px 4px; font-weight:700; font-size:.86rem; cursor:pointer; text-align:center; font-variant-numeric:tabular-nums; transition:border-color .15s, background .15s;}
+  .slot-btn:hover{border-color:var(--accent); background:var(--accent-soft);}
+  .stepper{display:flex; gap:6px; margin-bottom:18px;}
+  .stepper i{flex:1; height:3px; border-radius:4px; background:var(--line);}
+  .stepper i.done{background:var(--gold);}
+  .appt-row{border:1px solid var(--line); border-left:3px solid var(--gold); border-radius:11px; padding:12px 14px; display:flex; justify-content:space-between; align-items:flex-start; gap:10px; margin-bottom:8px; background:var(--surface); flex-wrap:wrap;}
+  .appt-time{font-family:'Fraunces',serif; font-weight:600; font-size:1.02rem; color:var(--accent-deep); white-space:nowrap; font-variant-numeric:tabular-nums;}
+  .cal-grid{display:grid; grid-template-columns:repeat(7,1fr); gap:4px;}
+  .cal-grid-head{margin-bottom:4px;}
+  .cal-head{text-align:center; font-size:.72rem; font-weight:700; color:var(--muted); padding:4px 0;}
+  .cal-cell{position:relative; aspect-ratio:1/1; border:1px solid var(--line); border-radius:9px; background:var(--surface); cursor:pointer; display:flex; align-items:flex-start; justify-content:flex-start; padding:5px; font:inherit; transition:border-color .15s, background .15s;}
+  .cal-cell:hover{border-color:var(--accent);}
+  .cal-cell.cal-empty{visibility:hidden; cursor:default; border:none;}
+  .cal-cell.cal-today{border-color:var(--accent); border-width:2px;}
+  .cal-cell.cal-past{opacity:.5;}
+  .cal-cell.cal-blocked{background:var(--danger-bg);}
+  .cal-daynum{font-size:.82rem; font-weight:700; color:var(--ink);}
+  .cal-count{position:absolute; bottom:4px; right:4px; min-width:16px; height:16px; padding:0 4px; border-radius:999px; background:var(--accent); color:var(--accent-ink); font-size:.65rem; font-weight:700; display:flex; align-items:center; justify-content:center;}
+  .cal-blocked-dot{position:absolute; bottom:5px; left:5px; width:7px; height:7px; border-radius:50%; background:var(--danger);}
+  .weekday-row{display:grid; grid-template-columns:130px 76px 1fr 1fr; gap:10px; align-items:center; padding:10px 4px; border-bottom:1px solid var(--line);}
+  .weekday-row:nth-of-type(odd){background:var(--surface-2); border-radius:8px;}
+  @media (max-width:520px){.weekday-row{grid-template-columns:1fr 1fr; grid-template-rows:auto auto;}}
+  .subtabs{display:flex; gap:6px; flex-wrap:wrap; margin-bottom:18px; border-bottom:1px solid var(--line); padding-bottom:10px;}
+  .subtabs button{border:1px solid var(--line); background:var(--surface); color:var(--muted); padding:7px 13px; border-radius:999px; font-size:.8rem; font-weight:700; cursor:pointer; transition:background .15s, color .15s, border-color .15s;}
+  .subtabs button:hover{color:var(--accent-deep);}
+  .subtabs button.active{background:var(--accent); color:var(--accent-ink); border-color:var(--accent);}
+  .banner{background:var(--gold-soft); color:var(--ink); border:1px solid var(--gold); border-radius:11px; padding:10px 14px; font-size:.85rem; margin-bottom:16px;}
+  .banner.warn{background:var(--danger-bg); color:var(--danger); border-color:var(--danger);}
+  .empty{color:var(--muted); font-size:.88rem; padding:16px 0; text-align:center;}
+  .modal-overlay{position:fixed; inset:0; background:rgba(30,20,20,.45); display:flex; align-items:flex-end; justify-content:center; z-index:100; padding:16px;}
+  @media (min-width:560px){.modal-overlay{align-items:center;}}
+  .modal{background:var(--surface); border-radius:16px; padding:20px; max-width:420px; width:100%; box-shadow:var(--shadow);}
+  .link-btn{background:none; border:none; color:var(--accent-deep); font-weight:700; cursor:pointer; padding:0; font-size:.85rem; text-decoration:underline;}
+  footer.foot{text-align:center; color:var(--muted); font-size:.73rem; padding:22px 0 40px; letter-spacing:.02em;}
+  .stat-row{display:grid; grid-template-columns:repeat(auto-fit,minmax(130px,1fr)); gap:10px; margin-bottom:16px;}
+  .stat-tile{background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:13px 15px;}
+  .stat-tile .stat-label{font-size:.68rem; color:var(--muted); text-transform:uppercase; letter-spacing:.06em; font-weight:700; margin-bottom:4px;}
+  .stat-tile .stat-value{font-family:'Fraunces',serif; font-size:1.35rem; font-weight:600; color:var(--accent-deep); font-variant-numeric:tabular-nums;}
+  .modal-lg{max-width:560px; max-height:85vh; overflow-y:auto;}
+  .gallery-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(130px,1fr)); gap:8px; margin-bottom:14px;}
+  .gallery-grid img{width:100%; aspect-ratio:1; object-fit:cover; border-radius:10px; border:1px solid var(--line); background:var(--surface-2); display:block;}
+  .photo-strip{display:flex; gap:8px; flex-wrap:wrap; margin-bottom:10px;}
+  .photo-chip{position:relative; width:64px; height:64px; flex:0 0 auto;}
+  .photo-chip img{width:100%; height:100%; object-fit:cover; border-radius:9px; border:1px solid var(--line); display:block;}
+  .photo-chip button{position:absolute; top:-6px; right:-6px; width:20px; height:20px; border-radius:50%; background:var(--danger); color:#fff; border:none; font-size:.7rem; line-height:1; cursor:pointer; display:flex; align-items:center; justify-content:center; padding:0;}
+  .cart-row{display:flex; justify-content:space-between; align-items:center; padding:8px 0; border-bottom:1px solid var(--line); gap:8px;}
+  .cart-total{display:flex; justify-content:space-between; align-items:center; padding-top:10px; margin-top:4px; font-weight:700;}
+  .service-pick.added{border-color:var(--accent); background:var(--accent-soft);}
+  .add-check{flex:0 0 auto; width:26px; height:26px; border-radius:50%; border:1.5px solid var(--line); display:flex; align-items:center; justify-content:center; font-size:.8rem; color:var(--muted); font-weight:700;}
+  .service-pick.added .add-check{background:var(--accent); border-color:var(--accent); color:var(--accent-ink);}
+  .fab-whats{position:fixed; right:18px; bottom:18px; width:54px; height:54px; border-radius:50%; background:#1FA855; color:#fff; display:flex; align-items:center; justify-content:center; box-shadow:0 8px 20px rgba(31,168,85,.4); z-index:50; text-decoration:none; transition:opacity .15s;}
+  .fab-whats svg{width:26px; height:26px;}
+  .fab-whats:hover{filter:brightness(1.06);}
+  /* Set by JS when the last thing on the page would otherwise sit right
+     underneath the button (short pages with little content) so nothing gets
+     visually covered; it clears again as soon as the content changes. */
+  .fab-whats.fab-dim{opacity:0; pointer-events:none;}
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Manrope:wght@400;500;600;700;800&family=Pinyon+Script&display=swap" rel="stylesheet">
+<!-- Supabase client library (loaded before the app script below, which uses window.supabase.createClient) -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+<div class="wrap">
+  <header class="top">
+    <div class="brand">
+      <h1><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><g transform="translate(16,16)"><ellipse rx="5.6" ry="9.5" transform="rotate(0)"/><ellipse rx="5.6" ry="9.5" transform="rotate(72)"/><ellipse rx="5.6" ry="9.5" transform="rotate(144)"/><ellipse rx="5.6" ry="9.5" transform="rotate(216)"/><ellipse rx="5.6" ry="9.5" transform="rotate(288)"/><circle r="2.6" fill="currentColor" stroke="none"/></g></svg><span id="brandName" class="brand-name">Laysa Nails</span></h1>
+      <span class="tag">Agendamento online</span>
+    </div>
+    <nav class="tabs" id="tabs"></nav>
+  </header>
+  <main id="app"></main>
+  <footer class="foot">Feito com carinho para clientes ficarem sempre em dia com as unhas</footer>
+</div>
+<a id="fabWhats" class="fab-whats" href="#" target="_blank" rel="noopener" aria-label="Falar no WhatsApp" hidden>
+  <svg viewBox="0 0 448 512" fill="#fff" aria-hidden="true"><path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/></svg>
+</a>
+<div id="modal-root"></div>
+
+<script>
+(function(){
+  "use strict";
+
+  // ---------- Supabase config ----------
+  // Gustavo: cole aqui a URL do projeto e a chave "anon public" do Supabase.
+  // Você encontra as duas em: painel do Supabase → seu projeto → Settings → API.
+  // Instruções completas no README.md que acompanha este arquivo.
+  var SUPABASE_URL = 'https://dbkrmufmfixfqfywfkvr.supabase.co';
+  var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRia3JtdWZtZml4ZnFmeXdma3ZyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAxODExMTAsImV4cCI6MjEwNTc1NzExMH0.8ig4U-dVQusgEj7sh6Lw2xQpywCqn52e0bs6mntIau8';
+  var SUPABASE_STORAGE_BUCKET = 'fotos';
+
+  // ---------- utilities ----------
+  function pad2(n){ return String(n).padStart(2,'0'); }
+  function todayStr(){ var d=new Date(); return d.getFullYear()+'-'+pad2(d.getMonth()+1)+'-'+pad2(d.getDate()); }
+  function maxDateStr(daysAhead){ var d=new Date(); d.setDate(d.getDate()+daysAhead); return d.getFullYear()+'-'+pad2(d.getMonth()+1)+'-'+pad2(d.getDate()); }
+  function currentMonthStr(){ var d=new Date(); return d.getFullYear()+'-'+pad2(d.getMonth()+1); }
+  var MONTH_NAME = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
+  function monthLabel(m){
+    if(!m) return '';
+    var p = m.split('-'); var name = MONTH_NAME[(+p[1])-1];
+    return name.charAt(0).toUpperCase()+name.slice(1)+' de '+p[0];
+  }
+  function shiftMonth(m, delta){
+    var p = m.split('-'); var d = new Date(+p[0], (+p[1]-1)+delta, 1);
+    return d.getFullYear()+'-'+pad2(d.getMonth()+1);
+  }
+  function daysInMonth(m){
+    var p = m.split('-'); return new Date(+p[0], +p[1], 0).getDate();
+  }
+  function dateMinusMonths(dateStr, n){
+    var p = dateStr.split('-');
+    var d = new Date(+p[0], (+p[1]-1)-n, +p[2]);
+    return d.getFullYear()+'-'+pad2(d.getMonth()+1)+'-'+pad2(d.getDate());
+  }
+  function timeToMinutes(t){ if(!t) return 0; var p=t.split(':'); return (+p[0])*60+(+p[1]); }
+  function minutesToTime(m){ m=((m%1440)+1440)%1440; return pad2(Math.floor(m/60))+':'+pad2(m%60); }
+  function formatDateBR(dateStr){
+    if(!dateStr) return '';
+    var p=dateStr.split('-'); var d=new Date(+p[0],+p[1]-1,+p[2]);
+    var dias=['domingo','segunda-feira','terça-feira','quarta-feira','quinta-feira','sexta-feira','sábado'];
+    return p[2]+'/'+p[1]+'/'+p[0]+' · '+dias[d.getDay()];
+  }
+  function formatDateShort(dateStr){
+    if(!dateStr) return '';
+    var p=dateStr.split('-'); return p[2]+'/'+p[1];
+  }
+  function formatDateNum(dateStr){
+    if(!dateStr) return '';
+    var p=dateStr.split('-'); return p[2]+'/'+p[1]+'/'+p[0];
+  }
+  function formatMoney(v){
+    v = Number(v)||0;
+    return 'R$ ' + v.toFixed(2).replace('.',',');
+  }
+  function formatDuration(min){
+    min = Number(min)||0;
+    if(min<60) return min+' min';
+    var h=Math.floor(min/60), m=min%60;
+    return h+'h'+(m?pad2(m):'');
+  }
+  function onlyDigits(s){ return (s||'').replace(/\D/g,''); }
+  function maskCPF(v){
+    v=onlyDigits(v).slice(0,11);
+    var out=v;
+    if(v.length>9) out = v.slice(0,3)+'.'+v.slice(3,6)+'.'+v.slice(6,9)+'-'+v.slice(9);
+    else if(v.length>6) out = v.slice(0,3)+'.'+v.slice(3,6)+'.'+v.slice(6);
+    else if(v.length>3) out = v.slice(0,3)+'.'+v.slice(3);
+    return out;
+  }
+  function maskPhone(v){
+    v=onlyDigits(v).slice(0,11);
+    var out=v;
+    if(v.length>10) out='('+v.slice(0,2)+') '+v.slice(2,7)+'-'+v.slice(7);
+    else if(v.length>6) out='('+v.slice(0,2)+') '+v.slice(2,6)+'-'+v.slice(6);
+    else if(v.length>2) out='('+v.slice(0,2)+') '+v.slice(2);
+    else if(v.length>0) out='('+v;
+    return out;
+  }
+  // Reformats a masked input's value while keeping the caret in the right
+  // spot. Without this, some mobile keyboards reset the cursor to the start
+  // after we rewrite the field's value on every keystroke, which makes the
+  // last digit typed land in the wrong place (or get silently dropped) —
+  // e.g. a full "(41) 98796-9869" ending up saved as "(41) 98796-986".
+  function applyMask(t, maskFn){
+    var oldVal = t.value;
+    var selStart = (t.selectionStart==null) ? oldVal.length : t.selectionStart;
+    var digitsBeforeCursor = onlyDigits(oldVal.slice(0, selStart)).length;
+    var newVal = maskFn(oldVal);
+    t.value = newVal;
+    var pos = 0, count = 0;
+    while(pos < newVal.length && count < digitsBeforeCursor){
+      if(/\d/.test(newVal[pos])) count++;
+      pos++;
+    }
+    try{ t.setSelectionRange(pos, pos); }catch(e){}
+    return newVal;
+  }
+  function isValidCPF(v){
+    v=onlyDigits(v);
+    if(v.length!==11) return false;
+    if(/^(\d)\1{10}$/.test(v)) return false;
+    var sum=0,i;
+    for(i=0;i<9;i++) sum += (10-i)*Number(v[i]);
+    var d1 = 11 - (sum%11); if(d1>=10) d1=0;
+    if(d1!==Number(v[9])) return false;
+    sum=0;
+    for(i=0;i<10;i++) sum += (11-i)*Number(v[i]);
+    var d2 = 11 - (sum%11); if(d2>=10) d2=0;
+    return d2===Number(v[10]);
+  }
+  function escapeHtml(s){
+    return String(s==null?'':s).replace(/[&<>"']/g, function(c){
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+    });
+  }
+  function waLink(phoneDigits, message){
+    var d = onlyDigits(phoneDigits);
+    if(d.length<10) return null;
+    if(d.length<=11) d = '55'+d;
+    return 'https://wa.me/'+d+(message ? ('?text='+encodeURIComponent(message)) : '');
+  }
+  async function sha256Hex(str){
+    var enc = new TextEncoder().encode(str);
+    var buf = await crypto.subtle.digest('SHA-256', enc);
+    return Array.from(new Uint8Array(buf)).map(function(b){return b.toString(16).padStart(2,'0');}).join('');
+  }
+
+  var WEEKDAY_ORDER = [1,2,3,4,5,6,0];
+  var WEEKDAY_NAME = {0:'Domingo',1:'Segunda-feira',2:'Terça-feira',3:'Quarta-feira',4:'Quinta-feira',5:'Sexta-feira',6:'Sábado'};
+  // Default owner login, protected as a hash (never the plain password) — change anytime in Configurações.
+  var DEFAULT_USERNAME = 'LaysaB';
+  var DEFAULT_PASSWORD_HASH = 'c962a9ca8091fde03dc990a457c38edb8999cc7caac5af92d12f92c9d0a5df0c';
+  var OWNER_WHATSAPP = '41987969869';
+  // Clients must book at least 1h30 in advance; the owner's own scheduling
+  // (admin "Novo agendamento", reschedule) is not held to this rule.
+  var CLIENT_BOOKING_LEAD_MINUTES = 90;
+  // Appointments (with client name/phone/CPF) and the "revenue" log (money
+  // actually received — see togglePaid) are both kept for RETENTION_MONTHS
+  // and then deleted automatically to save space and protect client data.
+  // The one exception: an unpaid, non-cancelled appointment is a debt — money
+  // she's still owed — so it's never auto-deleted, no matter how old, until
+  // it's actually paid or cancelled. See purgeOldData().
+  var RETENTION_MONTHS = 6;
+
+  // ---------- state ----------
+  var state = {
+    portal: null, // null = chooser, 'client', 'owner'
+    view: 'inicio',
+    dbAvailable: null,
+    db: null,
+    assets: null,
+    site: { salonName: 'Laysa Nails', username: 'LaysaB', passwordHash: null },
+    hours: WEEKDAY_ORDER.map(function(w){ return {weekday:w, closed: w===0, open:'09:00', close:'19:00'}; }),
+    services: [
+      {id:'ex1', name:'Esmaltação em gel', price:45, durationMinutes:60, active:true, photoIds:[], _example:true},
+      {id:'ex2', name:'Alongamento em fibra de vidro', price:120, durationMinutes:150, active:true, photoIds:[], _example:true},
+      {id:'ex3', name:'Manicure + Pedicure tradicional', price:60, durationMinutes:90, active:true, photoIds:[], _example:true},
+      {id:'ex4', name:'Francesinha', price:15, durationMinutes:15, active:true, photoIds:[], _example:true}
+    ],
+    appointments: [],
+    blocks: [],
+    expenses: [],
+    financeAppointments: [],
+    receivedAppointments: [],
+    calendarAppointments: [],
+    admin: { loggedIn:false, tab:'agenda', selectedDate: todayStr(), showNewAppt:false, financeMonth: currentMonthStr(), financeLoading:false, calendarMonth: currentMonthStr(), dayDetailDate: null },
+    booking: { step:1, services:[], date:'', time:'' },
+    meus: { identified:false, list:[], loading:false },
+    serviceDetail: null, // {id, forBooking}
+    forms: {
+      bookingName:'', bookingCPF:'', bookingPhone:'', bookingError:'',
+      meusCPF:'', meusPhone:'', meusError:'',
+      loginUsername:'', loginPassword:'', loginError:'',
+      newServiceName:'', newServicePrice:'', newServiceDuration:'', newServicePhotoIds:[], newServicePhotoUploading:false, newServiceError:'',
+      editingServiceId:null, editName:'', editPrice:'', editDuration:'', editPhotoIds:[], editPhotoUploading:false,
+      newBlockDate: todayStr(), newBlockAllDay:true, newBlockStart:'09:00', newBlockEnd:'10:00', newBlockReason:'',
+      newApptName:'', newApptCPF:'', newApptPhone:'', newApptServiceIds:[], newApptTime:'', newApptCustomTime:'', newApptError:'',
+      rescheduleApptId:null, rescheduleDate:'', rescheduleTime:'', rescheduleCustomTime:'', rescheduleError:'',
+      newExpenseDesc:'', newExpenseAmount:'', newExpenseDate: todayStr(), newExpenseError:'',
+      settingsSalonName:'', settingsSaved:false,
+      pwCurrent:'', pwNewUsername:'', pwNew:'', pwNew2:'', pwError:'', pwSaved:false,
+      hoursSaved:false
+    },
+    confirm: null
+  };
+
+  // Routing is decided purely by the link opened: the plain link is the client
+  // page; appending #profissional opens the owner login directly. There is no
+  // in-page switcher, so clients never see any hint that an owner area exists.
+  var OWNER_HASH = 'profissional';
+  try{
+    var hashTok = (location.hash||'').replace('#','');
+    state.portal = (hashTok===OWNER_HASH) ? 'owner' : 'client';
+  }catch(e){ state.portal='client'; }
+  if(state.portal==='client') state.view='inicio';
+
+  var hoursSeeded = false, siteSeeded = false;
+  var financeUnsub = null;
+  function subscribeFinanceMonth(monthStr){
+    if(!state.db) return;
+    if(financeUnsub){ financeUnsub(); financeUnsub=null; }
+    var start = monthStr+'-01', end = monthStr+'-31';
+    state.admin.financeLoading = true;
+    financeUnsub = state.db.collection('appointments').where('date','>=',start).where('date','<=',end).orderBy('date','asc').limit(500).onSnapshot(function(snap){
+      state.financeAppointments = snap.docs.map(function(d){ var v=d.data(); v.id=d.id; return v; });
+      state.admin.financeLoading = false;
+      render();
+    }, function(){ state.admin.financeLoading=false; render(); });
+  }
+
+  // Money only counts toward a month once she actually confirms payment — so
+  // "received this month" is scoped by the day she marked it paid, not by the
+  // appointment's service date, which can fall in a different month. It reads
+  // from the durable "revenue" collection (written by togglePaid below)
+  // rather than from "appointments" directly, so it keeps working within the
+  // retention window even after the appointment itself has been cleared out
+  // by purgeOldData() — though both age out together after RETENTION_MONTHS.
+  var receivedUnsub = null;
+  function subscribeReceivedMonth(monthStr){
+    if(!state.db) return;
+    if(receivedUnsub){ receivedUnsub(); receivedUnsub=null; }
+    var start = monthStr+'-01', end = monthStr+'-31';
+    receivedUnsub = state.db.collection('revenue').where('date','>=',start).where('date','<=',end).orderBy('date','asc').limit(500).onSnapshot(function(snap){
+      state.receivedAppointments = snap.docs.map(function(d){ var v=d.data(); v.id=d.id; return v; });
+      render();
+    }, function(){ render(); });
+  }
+
+  // Deletes appointments and revenue records older than RETENTION_MONTHS to
+  // keep the database small and avoid holding onto old client data (name,
+  // phone, CPF). The one thing exempt from this: an unpaid, non-cancelled
+  // appointment is a debt — money she's still owed — so it's kept forever,
+  // however old, until she actually marks it paid or cancels it. There's no
+  // server here to run this on a schedule, so it simply runs once whenever
+  // the professional logs in.
+  var purgedThisSession = false;
+  function purgeOldData(){
+    if(!state.db || purgedThisSession) return;
+    purgedThisSession = true;
+    var cutoff = dateMinusMonths(todayStr(), RETENTION_MONTHS);
+    state.db.collection('appointments').where('date','<',cutoff).limit(300).get().then(function(snap){
+      snap.docs.forEach(function(d){
+        var v = d.data();
+        var isDebt = !v.paid && v.status!=='cancelled';
+        if(isDebt) return; // money still owed — never auto-deleted
+        state.db.collection('appointments').doc(d.id).delete().catch(function(){});
+      });
+    }).catch(function(){});
+    state.db.collection('revenue').where('date','<',cutoff).limit(300).get().then(function(snap){
+      snap.docs.forEach(function(d){
+        state.db.collection('revenue').doc(d.id).delete().catch(function(){});
+      });
+    }).catch(function(){});
+  }
+
+  var calendarUnsub = null;
+  function subscribeCalendarMonth(monthStr){
+    if(!state.db) return;
+    if(calendarUnsub){ calendarUnsub(); calendarUnsub=null; }
+    var start = monthStr+'-01', end = monthStr+'-31';
+    calendarUnsub = state.db.collection('appointments').where('date','>=',start).where('date','<=',end).orderBy('date','asc').limit(500).onSnapshot(function(snap){
+      state.calendarAppointments = snap.docs.map(function(d){ var v=d.data(); v.id=d.id; return v; });
+      render();
+    }, function(){ render(); });
+  }
+
+  function loadMeusAppointments(){
+    if(!state.db) return;
+    var cpf = onlyDigits(state.forms.meusCPF), phone = onlyDigits(state.forms.meusPhone);
+    state.meus.loading = true; render();
+    state.db.collection('appointments').where('clientCPF','==',cpf).where('clientPhone','==',phone).orderBy('date','desc').limit(200).get().then(function(snap){
+      state.meus.list = snap.docs.map(function(d){ var v=d.data(); v.id=d.id; return v; });
+      state.meus.loading = false; render();
+    }).catch(function(){ state.meus.loading=false; render(); });
+  }
+
+  // ---------- Supabase compatibility shim ----------
+  // The rest of this file was originally written against the Claude Artifact
+  // db/assets capability, which offers a small Firestore-like API
+  // (collection/doc/where/orderBy/limit/onSnapshot/get/add/set/update/delete).
+  // Rather than rewrite every call site, this shim implements that same
+  // surface on top of a real Supabase project (Postgres + Realtime +
+  // Storage), so everything below "db bootstrap" keeps working unchanged.
+  //
+  // Live queries (onSnapshot) work by re-running the filtered query whenever
+  // Supabase Realtime reports ANY change on the table, rather than trying to
+  // patch individual rows in place. That's simpler and plenty fast for a
+  // salon-sized dataset (a handful of appointments a day).
+  function createSupabaseDb(client){
+    function snapshotFromRows(rows){
+      return {
+        empty: rows.length===0,
+        docs: rows.map(function(row){
+          var data = Object.assign({}, row);
+          return { id: row.id, data: function(){ return data; } };
+        })
+      };
+    }
+    function docSnapshotFromRow(row){
+      if(!row) return { exists:false, data:function(){ return null; } };
+      var data = Object.assign({}, row);
+      return { exists:true, data:function(){ return data; } };
+    }
+
+    function DocRef(table, id){ this.table=table; this.id=id; }
+    DocRef.prototype.set = function(data){
+      var payload = Object.assign({}, data, {id:this.id});
+      return client.from(this.table).upsert(payload, {onConflict:'id'}).then(function(res){
+        if(res.error) throw res.error;
+        return res;
+      });
+    };
+    DocRef.prototype.update = function(data){
+      return client.from(this.table).update(data).eq('id', this.id).then(function(res){
+        if(res.error) throw res.error;
+        return res;
+      });
+    };
+    DocRef.prototype.delete = function(){
+      return client.from(this.table).delete().eq('id', this.id).then(function(res){
+        if(res.error) throw res.error;
+        return res;
+      });
+    };
+    DocRef.prototype.get = function(){
+      return client.from(this.table).select('*').eq('id', this.id).maybeSingle().then(function(res){
+        if(res.error) throw res.error;
+        return docSnapshotFromRow(res.data);
+      });
+    };
+    DocRef.prototype.onSnapshot = function(onNext, onError){
+      var table = this.table, id = this.id;
+      function fetchOnce(){
+        client.from(table).select('*').eq('id', id).maybeSingle().then(function(res){
+          if(res.error){ if(onError) onError(res.error); return; }
+          onNext(docSnapshotFromRow(res.data));
+        });
+      }
+      fetchOnce();
+      var channel = client.channel('doc:'+table+':'+id+':'+Math.random().toString(16).slice(2))
+        .on('postgres_changes', {event:'*', schema:'public', table:table, filter:'id=eq.'+id}, fetchOnce)
+        .subscribe();
+      return function(){ client.removeChannel(channel); };
+    };
+
+    function Query(table){
+      this.table=table; this.filters=[]; this.orderField=null; this.orderDir='asc'; this.limitN=null;
+    }
+    Query.prototype.doc = function(id){ return new DocRef(this.table, id); };
+    Query.prototype.where = function(field, op, value){
+      var q = new Query(this.table);
+      q.filters = this.filters.concat([{field:field, op:op, value:value}]);
+      q.orderField = this.orderField; q.orderDir = this.orderDir; q.limitN = this.limitN;
+      return q;
+    };
+    Query.prototype.orderBy = function(field, dir){
+      var q = new Query(this.table);
+      q.filters = this.filters; q.orderField = field; q.orderDir = dir||'asc'; q.limitN = this.limitN;
+      return q;
+    };
+    Query.prototype.limit = function(n){
+      var q = new Query(this.table);
+      q.filters = this.filters; q.orderField = this.orderField; q.orderDir = this.orderDir; q.limitN = n;
+      return q;
+    };
+    Query.prototype._build = function(){
+      var req = client.from(this.table).select('*');
+      this.filters.forEach(function(f){
+        if(f.op==='==') req = req.eq(f.field, f.value);
+        else if(f.op==='<') req = req.lt(f.field, f.value);
+        else if(f.op==='<=') req = req.lte(f.field, f.value);
+        else if(f.op==='>') req = req.gt(f.field, f.value);
+        else if(f.op==='>=') req = req.gte(f.field, f.value);
+      });
+      if(this.orderField) req = req.order(this.orderField, {ascending: this.orderDir!=='desc'});
+      if(this.limitN) req = req.limit(this.limitN);
+      return req;
+    };
+    Query.prototype.get = function(){
+      return this._build().then(function(res){
+        if(res.error) throw res.error;
+        return snapshotFromRows(res.data||[]);
+      });
+    };
+    Query.prototype.add = function(data){
+      return client.from(this.table).insert(data).select().single().then(function(res){
+        if(res.error) throw res.error;
+        return { id: res.data.id };
+      });
+    };
+    Query.prototype.onSnapshot = function(onNext, onError){
+      var self_ = this;
+      function fetchAll(){
+        self_._build().then(function(res){
+          if(res.error){ if(onError) onError(res.error); return; }
+          onNext(snapshotFromRows(res.data||[]));
+        });
+      }
+      fetchAll();
+      var channel = client.channel('col:'+this.table+':'+Math.random().toString(16).slice(2))
+        .on('postgres_changes', {event:'*', schema:'public', table:this.table}, fetchAll)
+        .subscribe();
+      return function(){ client.removeChannel(channel); };
+    };
+
+    return {
+      collection: function(name){ return new Query(name); },
+      doc: function(path){
+        var parts = path.split('/');
+        return new DocRef(parts[0], parts[1]);
+      }
+    };
+  }
+
+  // Storage-backed replacement for the Artifact `assets` capability. Photos
+  // are stored as full public URLs directly in photoIds (see the /_blob/
+  // notes further down), so upload() returns the public URL as both `id`
+  // and `url`, and delete() derives the storage path back out of that URL.
+  function createSupabaseAssets(client){
+    var BUCKET = SUPABASE_STORAGE_BUCKET;
+    function extFromName(name){
+      var m = /\.[a-zA-Z0-9]+$/.exec(name||'');
+      return m ? m[0] : '';
+    }
+    function pathFromPublicUrl(url){
+      var marker = '/storage/v1/object/public/'+BUCKET+'/';
+      var idx = (url||'').indexOf(marker);
+      if(idx===-1) return null;
+      return url.slice(idx+marker.length);
+    }
+    return {
+      upload: function(file){
+        var path = Date.now()+'-'+Math.random().toString(16).slice(2)+extFromName(file.name);
+        return client.storage.from(BUCKET).upload(path, file).then(function(res){
+          if(res.error) throw res.error;
+          var pub = client.storage.from(BUCKET).getPublicUrl(path);
+          var url = pub.data.publicUrl;
+          return { id: url, url: url };
+        });
+      },
+      delete: function(idOrUrl){
+        var path = pathFromPublicUrl(idOrUrl) || idOrUrl;
+        return client.storage.from(BUCKET).remove([path]).then(function(res){
+          if(res.error) throw res.error;
+          return res;
+        });
+      }
+    };
+  }
+
+  // ---------- db bootstrap ----------
+  async function connectDb(){
+    var placeholders = SUPABASE_URL.indexOf('COLE_AQUI')!==-1 || SUPABASE_ANON_KEY.indexOf('COLE_AQUI')!==-1;
+    if(!window.supabase || placeholders){ state.dbAvailable=false; render(); return; }
+    var client = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    var db = createSupabaseDb(client);
+    var assets = createSupabaseAssets(client);
+    state.db = db; state.assets = assets || null; state.dbAvailable = true;
+
+    db.doc('config/site').onSnapshot(function(snap){
+      if(snap.exists){
+        var d = snap.data();
+        state.site.salonName = d.salonName || 'Laysa Nails';
+        state.site.username = d.username || DEFAULT_USERNAME;
+        state.site.passwordHash = d.passwordHash || null;
+      } else if(!siteSeeded){
+        siteSeeded = true;
+        db.doc('config/site').set({ salonName:'Laysa Nails', username:DEFAULT_USERNAME, passwordHash:DEFAULT_PASSWORD_HASH, createdAt:new Date().toISOString() }).catch(function(){});
+      }
+      render();
+    }, function(){});
+
+    db.collection('hours').onSnapshot(function(snap){
+      if(snap.empty){
+        if(!hoursSeeded){
+          hoursSeeded = true;
+          WEEKDAY_ORDER.forEach(function(w){
+            db.collection('hours').doc(String(w)).set({
+              weekday:w, closed: w===0, open:'09:00', close:'19:00'
+            }).catch(function(){});
+          });
+        }
+      } else {
+        var byW = {};
+        snap.docs.forEach(function(d){ var v=d.data(); byW[v.weekday]=v; });
+        state.hours = WEEKDAY_ORDER.map(function(w){
+          return byW[w] || {weekday:w, closed:w===0, open:'09:00', close:'19:00'};
+        });
+      }
+      render();
+    }, function(){});
+
+    db.collection('services').onSnapshot(function(snap){
+      state.services = snap.docs.map(function(d){
+        var v=d.data(); v.id=d.id;
+        if(!Array.isArray(v.photoIds)) v.photoIds = v.photoId ? [v.photoId] : [];
+        return v;
+      });
+      render();
+    }, function(){});
+
+    var today = todayStr();
+    db.collection('appointments').where('date','>=',today).orderBy('date','asc').limit(500).onSnapshot(function(snap){
+      state.appointments = snap.docs.map(function(d){ var v=d.data(); v.id=d.id; return v; });
+      render();
+    }, function(){});
+
+    db.collection('blocks').where('date','>=',today).orderBy('date','asc').limit(200).onSnapshot(function(snap){
+      state.blocks = snap.docs.map(function(d){ var v=d.data(); v.id=d.id; return v; });
+      render();
+    }, function(){});
+
+    db.collection('expenses').orderBy('date','desc').limit(500).onSnapshot(function(snap){
+      state.expenses = snap.docs.map(function(d){ var v=d.data(); v.id=d.id; return v; });
+      render();
+    }, function(){});
+
+    subscribeFinanceMonth(state.admin.financeMonth);
+    subscribeReceivedMonth(state.admin.financeMonth);
+    subscribeCalendarMonth(state.admin.calendarMonth);
+
+    render();
+  }
+
+  // ---------- slot computation ----------
+  function computeSlots(dateStr, durationMinutes, excludeApptId, leadMinutes){
+    if(!dateStr || !durationMinutes) return [];
+    var p = dateStr.split('-');
+    var wd = new Date(+p[0], +p[1]-1, +p[2]).getDay();
+    var hoursDoc = state.hours.filter(function(h){ return h.weekday===wd; })[0];
+    if(!hoursDoc || hoursDoc.closed) return [];
+    var openMin = timeToMinutes(hoursDoc.open);
+    var closeMin = timeToMinutes(hoursDoc.close);
+    if(closeMin<=openMin) return [];
+
+    var dayBlocks = state.blocks.filter(function(b){ return b.date===dateStr; });
+    if(dayBlocks.some(function(b){ return b.allDay; })) return [];
+
+    var busy = dayBlocks.filter(function(b){ return !b.allDay; }).map(function(b){
+      return {start:timeToMinutes(b.startTime), end:timeToMinutes(b.endTime)};
+    });
+    state.appointments.filter(function(a){
+      return a.date===dateStr && a.status==='confirmed' && a.id!==excludeApptId;
+    }).forEach(function(a){
+      busy.push({start:timeToMinutes(a.startTime), end:timeToMinutes(a.startTime)+(a.durationMinutes||0)});
+    });
+
+    // How far ahead a slot must start. Clients need `leadMinutes` (1h30) of
+    // notice; the owner's own scheduling (admin, reschedule) keeps the
+    // smaller default so she can still book something starting very soon.
+    var lead = (leadMinutes==null) ? 15 : leadMinutes;
+    var cutoff = new Date(Date.now() + lead*60000);
+    var cutoffDateStr = cutoff.getFullYear()+'-'+pad2(cutoff.getMonth()+1)+'-'+pad2(cutoff.getDate());
+    var nowMin = -1;
+    if(dateStr < cutoffDateStr){
+      return []; // the whole day is already inside the lead window
+    } else if(dateStr === cutoffDateStr){
+      nowMin = cutoff.getHours()*60 + cutoff.getMinutes();
+    }
+
+    var step=15, slots=[];
+    for(var t=openMin; t+durationMinutes<=closeMin; t+=step){
+      if(t<nowMin) continue;
+      var conflict = busy.some(function(r){ return t < r.end && (t+durationMinutes) > r.start; });
+      if(!conflict) slots.push(minutesToTime(t));
+    }
+    return slots;
+  }
+
+  // ---------- confirm modal ----------
+  function askConfirm(message, onYes, opts){
+    state.confirm = {message:message, onYes:onYes, danger: opts && opts.danger};
+    render();
+  }
+  function closeConfirm(){ state.confirm=null; render(); }
+
+  // ---------- photo upload ----------
+  function handlePhotoFiles(fileList, idsField, flagField){
+    var files = Array.prototype.slice.call(fileList||[]);
+    if(!files.length) return;
+    if(!state.assets){ return; }
+    state.forms[flagField] = true; render();
+    Promise.all(files.map(function(file){ return state.assets.upload(file); })).then(function(results){
+      results.forEach(function(res){ state.forms[idsField].push(res.id); });
+      state.forms[flagField] = false; render();
+    }).catch(function(){
+      state.forms[flagField] = false; render();
+    });
+  }
+
+  // ---------- service cart helpers ----------
+  function cartTotals(ids){
+    var items = ids.map(function(id){ return state.services.filter(function(s){ return s.id===id; })[0]; }).filter(Boolean);
+    var duration = items.reduce(function(sum,s){ return sum+(s.durationMinutes||0); }, 0);
+    var price = items.reduce(function(sum,s){ return sum+(Number(s.price)||0); }, 0);
+    var names = items.map(function(s){ return s.name; });
+    return {items:items, duration:duration, price:price, names:names, label:names.join(' + ')};
+  }
+  function openServiceDetail(id, forBooking){ state.serviceDetail = {id:id, forBooking:!!forBooking}; render(); }
+  function closeServiceDetail(){ state.serviceDetail = null; render(); }
+
+  // ---------- render helpers ----------
+  function setView(v){ state.view=v; window.scrollTo(0,0); render(); }
+
+  function clientTabsHtml(){
+    var tabs = [
+      ['inicio','Início'],
+      ['agendar','Agendar'],
+      ['meus','Meus agendamentos']
+    ];
+    return tabs.map(function(t){
+      return '<button data-action="setView" data-view="'+t[0]+'" class="'+(state.view===t[0]?'active':'')+'">'+t[1]+'</button>';
+    }).join('');
+  }
+
+  function renderHoursList(){
+    return state.hours.map(function(h){
+      return '<div class="row between" style="padding:5px 0;">'+
+        '<span>'+WEEKDAY_NAME[h.weekday]+'</span>'+
+        (h.closed ? '<span class="badge badge-off">Fechado</span>' : '<span class="badge badge-ok">'+h.open+' – '+h.close+'</span>')+
+        '</div>';
+    }).join('');
+  }
+
+  function renderInicio(){
+    var activeServices = state.services.filter(function(s){ return s.active; });
+    return ''+
+      (state.dbAvailable===false ? '<div class="banner warn">Sem conexão com o banco de dados no momento. Tente novamente em instantes.</div>' : '')+
+      '<div class="card" style="text-align:center;">'+
+        '<h2 class="display" style="font-size:1.4rem;">Bem-vinda ao '+escapeHtml(state.site.salonName)+'</h2>'+
+        '<p class="muted">Escolha seu serviço, veja os horários disponíveis e agende em poucos passos — sem precisar criar conta.</p>'+
+        '<div class="row" style="justify-content:center;">'+
+          '<button class="btn btn-primary" data-action="setView" data-view="agendar">Agendar horário</button>'+
+          '<a class="btn btn-whats" href="'+waLink(OWNER_WHATSAPP, 'Olá! Vim pelo site do '+state.site.salonName+'.')+'" target="_blank" rel="noopener">Falar no WhatsApp</a>'+
+        '</div>'+
+      '</div>'+
+      '<div class="card"><h2>Horário de funcionamento</h2>'+renderHoursList()+'</div>'+
+      '<div class="card"><h2>Serviços</h2>'+
+        (activeServices.length ? '<div class="stack">'+activeServices.map(function(s){
+          return '<div class="row between" style="padding:4px 0; cursor:pointer;" data-action="openServiceDetail" data-id="'+s.id+'">'+
+            '<div class="row" style="gap:10px;">'+
+              (s.photoIds && s.photoIds[0] ? '<img class="thumb thumb-sm" src="'+s.photoIds[0]+'" alt="">' : '')+
+              '<span>'+escapeHtml(s.name)+' <span class="muted">· '+formatDuration(s.durationMinutes)+'</span></span>'+
+            '</div>'+
+            '<span class="price">'+formatMoney(s.price)+'</span>'+
+          '</div>';
+        }).join('') + '</div>' : '<div class="empty">Nenhum serviço cadastrado ainda.</div>')+
+      '</div>';
+  }
+
+  // ----- Agendar (booking wizard) -----
+  function renderAgendar(){
+    var b = state.booking, f = state.forms;
+    var html = '<div class="stepper">'+[1,2,3,4].map(function(i){ return '<i class="'+(b.step>=i?'done':'')+'"></i>'; }).join('')+'</div>';
+
+    if(b.step===1){
+      html += '<div class="card">'+
+        '<h2>Seus dados</h2>'+
+        '<div class="field"><label>Nome completo</label><input type="text" id="f-bookingName" value="'+escapeHtml(f.bookingName)+'" placeholder="Seu nome"></div>'+
+        '<div class="grid2">'+
+          '<div class="field"><label>CPF</label><input type="text" id="f-bookingCPF" inputmode="numeric" value="'+escapeHtml(f.bookingCPF)+'" placeholder="000.000.000-00"></div>'+
+          '<div class="field"><label>Telefone (WhatsApp)</label><input type="tel" id="f-bookingPhone" inputmode="numeric" value="'+escapeHtml(f.bookingPhone)+'" placeholder="(00) 00000-0000"></div>'+
+        '</div>'+
+        '<p class="muted" style="font-size:.8rem;">Não é necessário criar conta — usamos seu CPF e telefone só para identificar seus agendamentos.</p>'+
+        (f.bookingError ? '<div class="banner warn">'+escapeHtml(f.bookingError)+'</div>' : '')+
+        '<button class="btn btn-primary btn-block" data-action="bookingStep1Next">Continuar</button>'+
+      '</div>';
+      return html;
+    }
+
+    if(b.step===2){
+      var actives = state.services.filter(function(s){ return s.active; });
+      var cart = cartTotals(b.services);
+      html += '<div class="card">'+
+        '<h2>Escolha os serviços</h2>'+
+        '<p class="muted" style="font-size:.82rem; margin-top:-8px;">Toque em um serviço para ver as fotos e adicionar. Dá para escolher mais de um.</p>'+
+        (actives.length ? '<div class="stack">'+actives.map(function(s){
+          var added = b.services.indexOf(s.id)!==-1;
+          return '<div class="service-pick'+(added?' added':'')+'" data-action="openServiceDetail" data-id="'+s.id+'" data-booking="1">'+
+            (s.photoIds && s.photoIds[0] ? '<img class="thumb" src="'+s.photoIds[0]+'" alt="">' : '')+
+            '<div class="info"><div class="row between"><strong>'+escapeHtml(s.name)+'</strong><span class="price">'+formatMoney(s.price)+'</span></div>'+
+            '<div class="muted" style="font-size:.85rem;">Duração aproximada: '+formatDuration(s.durationMinutes)+(s.photoIds&&s.photoIds.length>1?' · '+s.photoIds.length+' fotos':'')+'</div></div>'+
+            '<div class="add-check">'+(added?'✓':'+')+'</div>'+
+          '</div>';
+        }).join('') + '</div>' : '<div class="empty">Nenhum serviço disponível no momento.</div>')+
+      '</div>';
+      if(cart.items.length){
+        html += '<div class="card">'+
+          '<h3>Serviços selecionados</h3>'+
+          cart.items.map(function(s){
+            return '<div class="cart-row"><span>'+escapeHtml(s.name)+' <span class="muted">· '+formatDuration(s.durationMinutes)+'</span></span>'+
+              '<span class="row" style="gap:8px;"><span class="price">'+formatMoney(s.price)+'</span><button type="button" class="btn btn-ghost btn-sm" data-action="removeCartItem" data-id="'+s.id+'">remover</button></span></div>';
+          }).join('')+
+          '<div class="cart-total"><span>Total · '+formatDuration(cart.duration)+'</span><span class="price">'+formatMoney(cart.price)+'</span></div>'+
+        '</div>';
+      }
+      html += '<div class="row" style="gap:8px;">'+
+        '<button class="btn btn-ghost" data-action="bookingBack">← Voltar</button>'+
+        '<button class="btn btn-primary" data-action="bookingStep2Next" '+(cart.items.length?'':'disabled')+'>Continuar</button>'+
+      '</div>';
+      return html;
+    }
+
+    if(b.step===3){
+      var cart3 = cartTotals(b.services);
+      var slots = b.date ? computeSlots(b.date, cart3.duration, null, CLIENT_BOOKING_LEAD_MINUTES) : [];
+      html += '<div class="card">'+
+        '<h2>Escolha a data</h2>'+
+        '<p class="muted" style="font-size:.82rem; margin-top:-8px;">'+escapeHtml(cart3.label)+' · duração total '+formatDuration(cart3.duration)+'</p>'+
+        '<p class="muted" style="font-size:.78rem;">Agendamentos precisam ser feitos com pelo menos 1h30 de antecedência.</p>'+
+        '<div class="field"><label>Data</label><input type="date" id="f-bookingDate" value="'+b.date+'" min="'+todayStr()+'" max="'+maxDateStr(60)+'"></div>'+
+        (b.date ? (
+          slots.length ? '<div><label>Horários disponíveis em '+formatDateShort(b.date)+'</label><div class="slots">'+
+            slots.map(function(t){ return '<button class="slot-btn" data-action="pickTime" data-time="'+t+'">'+t+'</button>'; }).join('')+
+          '</div></div>' : '<div class="empty">Sem horários disponíveis nesta data. Tente outro dia.</div>'
+        ) : '')+
+        '<button class="btn btn-ghost" data-action="bookingBack" style="margin-top:10px;">← Voltar</button>'+
+      '</div>';
+      return html;
+    }
+
+    if(b.step===4){
+      var cart4 = cartTotals(b.services);
+      html += '<div class="card">'+
+        '<h2>Confirme seu agendamento</h2>'+
+        '<div class="stack" style="margin-bottom:14px;">'+
+          cart4.items.map(function(s){
+            return '<div class="row between"><span class="muted">'+escapeHtml(s.name)+'</span><strong>'+formatMoney(s.price)+'</strong></div>';
+          }).join('')+
+          '<div class="row between"><span class="muted">Data</span><strong>'+formatDateBR(b.date)+'</strong></div>'+
+          '<div class="row between"><span class="muted">Horário</span><strong>'+b.time+'</strong></div>'+
+          '<div class="row between"><span class="muted">Duração total</span><strong>'+formatDuration(cart4.duration)+'</strong></div>'+
+          '<div class="row between"><span class="muted">Valor total</span><strong class="price">'+formatMoney(cart4.price)+'</strong></div>'+
+          '<div class="row between"><span class="muted">Cliente</span><strong>'+escapeHtml(f.bookingName)+'</strong></div>'+
+        '</div>'+
+        (f.bookingError ? '<div class="banner warn">'+escapeHtml(f.bookingError)+'</div>' : '')+
+        '<button class="btn btn-primary btn-block" data-action="confirmBooking" '+(state.dbAvailable===false?'disabled':'')+'>Confirmar agendamento</button>'+
+        '<button class="btn btn-ghost btn-block" data-action="bookingBack" style="margin-top:8px;">← Voltar</button>'+
+      '</div>';
+      return html;
+    }
+
+    if(b.step===5){
+      var cart5 = cartTotals(b.services);
+      html += '<div class="card" style="text-align:center;">'+
+        '<div class="badge badge-ok" style="font-size:.9rem; padding:6px 14px;">Agendamento confirmado</div>'+
+        '<h2 class="display" style="margin-top:12px;">Tudo certo, '+escapeHtml(f.bookingName.split(' ')[0]||'')+'!</h2>'+
+        '<p class="muted">'+escapeHtml(cart5.label)+' em '+formatDateBR(b.date)+' às '+b.time+'.</p>'+
+        '<div class="row" style="justify-content:center; margin-top:14px;">'+
+          '<button class="btn btn-outline" data-action="bookAnother">Agendar outro horário</button>'+
+          '<button class="btn btn-primary" data-action="goToMeus">Ver meus agendamentos</button>'+
+        '</div>'+
+      '</div>';
+      return html;
+    }
+    return html;
+  }
+
+  // ----- Meus agendamentos -----
+  function renderMeus(){
+    var f=state.forms;
+    if(!state.meus.identified){
+      return '<div class="card">'+
+        '<h2>Ver meus agendamentos</h2>'+
+        '<p class="muted">Informe o CPF e telefone usados no agendamento.</p>'+
+        '<div class="field"><label>CPF</label><input type="text" id="f-meusCPF" inputmode="numeric" value="'+escapeHtml(f.meusCPF)+'" placeholder="000.000.000-00"></div>'+
+        '<div class="field"><label>Telefone</label><input type="tel" id="f-meusPhone" inputmode="numeric" value="'+escapeHtml(f.meusPhone)+'" placeholder="(00) 00000-0000"></div>'+
+        (f.meusError ? '<div class="banner warn">'+escapeHtml(f.meusError)+'</div>' : '')+
+        '<button class="btn btn-primary btn-block" data-action="findMeus">Buscar</button>'+
+      '</div>';
+    }
+    var nowDateStr = todayStr(), nowMin = new Date().getHours()*60+new Date().getMinutes();
+    var upcoming = [], past = [];
+    state.meus.list.forEach(function(a){
+      var isPast = a.date < nowDateStr || (a.date===nowDateStr && timeToMinutes(a.startTime) < nowMin);
+      (isPast ? past : upcoming).push(a);
+    });
+    upcoming.sort(function(a,b2){ return (a.date+a.startTime).localeCompare(b2.date+b2.startTime); });
+    past.sort(function(a,b2){ return (b2.date+b2.startTime).localeCompare(a.date+a.startTime); });
+
+    function apptItem(a, allowCancel){
+      var cancelled = a.status==='cancelled';
+      // Only the professional can actually change or cancel an appointment;
+      // the client's "Cancelar" is a WhatsApp request to her, not a direct edit.
+      var waAskCancel = (allowCancel && !cancelled) ? waLink(OWNER_WHATSAPP, clientCancelRequestMsg(a)) : null;
+      return '<div class="appt-row" style="'+(cancelled?'opacity:.55;':'')+'">'+
+        '<div><div class="appt-time">'+formatDateShort(a.date)+' · '+a.startTime+'</div>'+
+        '<div style="font-size:.85rem;">'+escapeHtml(a.serviceName)+' · '+formatMoney(a.price)+'</div>'+
+        (cancelled ? '<span class="badge badge-off">Cancelado</span>' : '<span class="badge '+(a.paid?'badge-ok':'badge-gold')+'">'+(a.paid?'Pago':'Pagamento pendente')+'</span>')+
+        '</div>'+
+        (waAskCancel ? '<a class="btn btn-whats btn-sm" href="'+waAskCancel+'" target="_blank" rel="noopener">Pedir cancelamento</a>' : '')+
+      '</div>';
+    }
+
+    return '<div class="card">'+
+      '<div class="row between"><h2 style="margin:0;">Seus agendamentos</h2><button class="link-btn" data-action="resetMeus">trocar CPF/telefone</button></div>'+
+      (state.meus.loading ? '<p class="muted" style="font-size:.85rem;">Carregando...</p>' : (
+        '<h3 style="margin:14px 0 6px;">Próximos</h3>'+
+        (upcoming.length ? '<div class="stack">'+upcoming.map(function(a){ return apptItem(a,true); }).join('')+'</div>' : '<div class="empty">Nenhum agendamento futuro.</div>')+
+        '<h3 style="margin:18px 0 6px;">Anteriores</h3>'+
+        (past.length ? '<div class="stack">'+past.map(function(a){ return apptItem(a,false); }).join('')+'</div>' : '<div class="empty">Nenhum agendamento anterior encontrado.</div>')
+      ))+
+    '</div>';
+  }
+
+  // ----- Owner (dona) portal -----
+  function renderOwner(){
+    if(!state.admin.loggedIn){
+      var f=state.forms;
+      return '<div class="card">'+
+        '<h2>Entrar como profissional</h2>'+
+        '<div class="field"><label>Usuário</label><input type="text" id="f-loginUsername" autocapitalize="off" autocorrect="off" value="'+escapeHtml(f.loginUsername)+'"></div>'+
+        '<div class="field"><label>Senha</label><input type="password" id="f-loginPassword" value="'+escapeHtml(f.loginPassword)+'"></div>'+
+        (f.loginError ? '<div class="banner warn">'+escapeHtml(f.loginError)+'</div>' : '')+
+        '<button class="btn btn-primary btn-block" data-action="doLogin" '+(state.dbAvailable===false?'disabled':'')+'>Entrar</button>'+
+        (state.dbAvailable===false ? '<p class="muted" style="font-size:.8rem; margin-top:8px;">Sem conexão com o banco de dados no momento. Verifique sua internet e tente novamente.</p>' : '')+
+      '</div>';
+    }
+
+    var subtabs=[['agenda','Agenda'],['calendario','Calendário'],['servicos','Serviços'],['horarios','Horários'],['bloqueios','Bloqueios'],['financeiro','Financeiro'],['config','Configurações']];
+    var html = '<div class="row between" style="margin-bottom:10px;"><h2 style="margin:0;">Painel da profissional</h2><button class="btn btn-ghost btn-sm" data-action="logout">Sair</button></div>';
+    html += '<div class="subtabs">'+subtabs.map(function(t){
+      return '<button data-action="setAdminTab" data-tab="'+t[0]+'" class="'+(state.admin.tab===t[0]?'active':'')+'">'+t[1]+'</button>';
+    }).join('')+'</div>';
+
+    if(state.admin.tab==='agenda') html += renderAdminAgenda();
+    else if(state.admin.tab==='calendario') html += renderAdminCalendario();
+    else if(state.admin.tab==='servicos') html += renderAdminServicos();
+    else if(state.admin.tab==='horarios') html += renderAdminHorarios();
+    else if(state.admin.tab==='bloqueios') html += renderAdminBloqueios();
+    else if(state.admin.tab==='financeiro') html += renderAdminFinanceiro();
+    else if(state.admin.tab==='config') html += renderAdminConfig();
+    return html;
+  }
+
+  function renderAdminAgenda(){
+    var d = state.admin.selectedDate;
+    var p = d.split('-'); var wd = new Date(+p[0],+p[1]-1,+p[2]).getDay();
+    var hoursDoc = state.hours.filter(function(h){return h.weekday===wd;})[0];
+    var dayBlocks = state.blocks.filter(function(b){ return b.date===d; });
+    var dayAppts = state.appointments.filter(function(a){ return a.date===d; }).sort(function(a,b){ return a.startTime.localeCompare(b.startTime); });
+    var f = state.forms;
+
+    var today = todayStr();
+    var confirmedFuture = state.appointments.filter(function(a){ return a.status==='confirmed'; }).sort(function(a,b){ return (a.date+a.startTime).localeCompare(b.date+b.startTime); });
+    var todayCount = confirmedFuture.filter(function(a){ return a.date===today; }).length;
+    var weekEnd = maxDateStr(6);
+    var weekCount = confirmedFuture.filter(function(a){ return a.date>=today && a.date<=weekEnd; }).length;
+    var next = confirmedFuture.filter(function(a){ return a.date>today || (a.date===today && a.startTime >= minutesToTime(new Date().getHours()*60+new Date().getMinutes())); })[0];
+
+    var html = '<div class="stat-row">'+
+      '<div class="stat-tile"><div class="stat-label">Hoje</div><div class="stat-value">'+todayCount+'</div></div>'+
+      '<div class="stat-tile"><div class="stat-label">Próximos 7 dias</div><div class="stat-value">'+weekCount+'</div></div>'+
+      '<div class="stat-tile"><div class="stat-label">Próximo horário</div><div class="stat-value" style="font-size:1.05rem;">'+(next ? formatDateShort(next.date)+' · '+next.startTime : '—')+'</div></div>'+
+    '</div>';
+    html += '<div class="card">'+
+      '<div class="field" style="max-width:220px;"><label>Data</label><input type="date" id="f-adminDate" value="'+d+'"></div>'+
+      '<div class="row between" style="margin-bottom:6px;">'+
+        '<span>'+WEEKDAY_NAME[wd]+' — '+(hoursDoc && !hoursDoc.closed ? hoursDoc.open+' às '+hoursDoc.close : 'Fechado')+'</span>'+
+      '</div>'+
+      (dayBlocks.length ? '<div class="row" style="flex-wrap:wrap; margin-bottom:8px;">'+dayBlocks.map(function(b){
+        return '<span class="badge badge-off">Bloqueado: '+(b.allDay?'dia todo':b.startTime+'–'+b.endTime)+(b.reason?' ('+escapeHtml(b.reason)+')':'')+'</span>';
+      }).join(' ')+'</div>' : '')+
+      '<button class="btn btn-outline btn-sm" data-action="toggleNewAppt">'+(state.admin.showNewAppt?'Cancelar':'+ Novo agendamento')+'</button>'+
+    '</div>';
+
+    if(state.admin.showNewAppt){
+      var adminCart = cartTotals(f.newApptServiceIds);
+      var slots = adminCart.duration ? computeSlots(d, adminCart.duration) : [];
+      html += '<div class="card">'+
+        '<h3>Novo agendamento</h3>'+
+        '<div class="grid2">'+
+          '<div class="field"><label>Nome do cliente</label><input type="text" id="f-newApptName" value="'+escapeHtml(f.newApptName)+'"></div>'+
+          '<div class="field"><label>Telefone</label><input type="tel" id="f-newApptPhone" value="'+escapeHtml(f.newApptPhone)+'" placeholder="(00) 00000-0000"></div>'+
+        '</div>'+
+        '<div class="field"><label>CPF (opcional)</label><input type="text" id="f-newApptCPF" value="'+escapeHtml(f.newApptCPF)+'" placeholder="000.000.000-00"></div>'+
+        '<label>Serviços</label>'+
+        '<div class="stack" style="margin-bottom:12px;">'+state.services.filter(function(s){return s.active;}).map(function(s){
+          var added = f.newApptServiceIds.indexOf(s.id)!==-1;
+          return '<div class="service-pick'+(added?' added':'')+'" data-action="toggleAdminCartItem" data-id="'+s.id+'" style="padding:10px 12px;">'+
+            (s.photoIds && s.photoIds[0] ? '<img class="thumb thumb-sm" src="'+s.photoIds[0]+'" alt="">' : '')+
+            '<div class="info"><div class="row between"><strong style="font-size:.9rem;">'+escapeHtml(s.name)+'</strong><span class="price" style="font-size:.9rem;">'+formatMoney(s.price)+'</span></div>'+
+            '<div class="muted" style="font-size:.78rem;">'+formatDuration(s.durationMinutes)+'</div></div>'+
+            '<div class="add-check">'+(added?'✓':'+')+'</div>'+
+          '</div>';
+        }).join('')+'</div>'+
+        (adminCart.items.length ? '<p class="muted" style="font-size:.82rem;">Total: '+escapeHtml(adminCart.label)+' · '+formatDuration(adminCart.duration)+' · '+formatMoney(adminCart.price)+'</p>' : '')+
+        (adminCart.items.length ? (slots.length ? '<div class="field"><label>Horário</label><div class="slots">'+
+          slots.map(function(t){ return '<button type="button" class="slot-btn" data-action="pickAdminTime" data-time="'+t+'" style="'+(f.newApptTime===t?'background:var(--accent-soft);border-color:var(--accent);':'')+'">'+t+'</button>'; }).join('')+
+        '</div></div>' : '<div class="empty">Sem horários livres nesta data para esses serviços.</div>') : '')+
+        '<div class="field"><label>Ou horário personalizado (HH:MM)</label><input type="text" id="f-newApptCustomTime" value="'+escapeHtml(f.newApptCustomTime)+'" placeholder="ex: 18:30"></div>'+
+        (f.newApptError ? '<div class="banner warn">'+escapeHtml(f.newApptError)+'</div>' : '')+
+        '<button class="btn btn-primary btn-block" data-action="saveAdminAppt">Salvar agendamento</button>'+
+      '</div>';
+    }
+
+    html += '<div class="card"><h3>Agendamentos do dia</h3>'+
+      (dayAppts.length ? dayAppts.map(function(a){
+        var cancelled = a.status==='cancelled';
+        var waConfirm = a.clientPhone ? waLink(a.clientPhone, apptConfirmMsg(a)) : null;
+        var reschedOpen = f.rescheduleApptId===a.id;
+        var reschedDateVal = f.rescheduleDate || a.date;
+        var reschedSlots = reschedOpen ? computeSlots(reschedDateVal, a.durationMinutes||0, a.id) : [];
+        return '<div class="appt-row" style="'+(cancelled?'opacity:.55;':'')+'">'+
+          '<div><div class="appt-time">'+a.startTime+' – '+minutesToTime(timeToMinutes(a.startTime)+(a.durationMinutes||0))+'</div>'+
+          '<div style="font-size:.85rem;">'+escapeHtml(a.serviceName)+' · '+escapeHtml(a.clientName||'')+(a.clientPhone?' · '+escapeHtml(a.clientPhone):'')+'</div>'+
+          (cancelled ? '<span class="badge badge-off">Cancelado</span>' : '')+
+          '</div>'+
+          '<div class="row" style="gap:6px; flex-wrap:wrap;">'+
+          (!cancelled && waConfirm ? '<a class="btn btn-whats btn-sm" href="'+waConfirm+'" target="_blank" rel="noopener">Confirmar</a>' : '')+
+          (!cancelled ? '<button class="btn btn-outline btn-sm" data-action="'+(reschedOpen?'closeReschedule':'openReschedule')+'" data-id="'+a.id+'">'+(reschedOpen?'Fechar':'Alterar horário')+'</button>' : '')+
+          (cancelled ? '' : '<button class="btn btn-danger btn-sm" data-action="cancelAppt" data-id="'+a.id+'">Desmarcar</button>')+
+          '<button class="btn btn-ghost btn-sm" data-action="deleteAppt" data-id="'+a.id+'">Excluir</button>'+
+          '</div>'+
+          (reschedOpen ? (
+            '<div style="flex:1 0 100%; margin-top:10px; padding-top:10px; border-top:1px dashed var(--line);">'+
+              '<div class="field" style="max-width:220px;"><label>Nova data</label><input type="date" id="f-rescheduleDate" value="'+reschedDateVal+'"></div>'+
+              (reschedSlots.length ? '<div class="field"><label>Novo horário</label><div class="slots">'+
+                reschedSlots.map(function(t){ return '<button type="button" class="slot-btn" data-action="pickRescheduleTime" data-time="'+t+'" style="'+(f.rescheduleTime===t?'background:var(--accent-soft);border-color:var(--accent);':'')+'">'+t+'</button>'; }).join('')+
+              '</div></div>' : '<div class="empty">Sem horários livres nesta data.</div>')+
+              '<div class="field"><label>Ou horário personalizado (HH:MM)</label><input type="text" id="f-rescheduleCustomTime" value="'+escapeHtml(f.rescheduleCustomTime)+'" placeholder="ex: 18:30"></div>'+
+              (f.rescheduleError ? '<div class="banner warn">'+escapeHtml(f.rescheduleError)+'</div>' : '')+
+              '<button class="btn btn-primary btn-sm" data-action="saveReschedule" data-id="'+a.id+'">Salvar e avisar no WhatsApp</button>'+
+            '</div>'
+          ) : '')+
+        '</div>';
+      }).join('') : '<div class="empty">Nenhum agendamento nesse dia.</div>')+
+    '</div>';
+
+    return html;
+  }
+
+  function renderAdminCalendario(){
+    var m = state.admin.calendarMonth || currentMonthStr();
+    var p = m.split('-'); var year=+p[0], monthNum=+p[1];
+    var firstWeekday = new Date(year, monthNum-1, 1).getDay();
+    var totalDays = daysInMonth(m);
+    var today = todayStr();
+
+    var apptCountByDay = {};
+    state.calendarAppointments.filter(function(a){ return a.status==='confirmed'; }).forEach(function(a){
+      apptCountByDay[a.date] = (apptCountByDay[a.date]||0) + 1;
+    });
+    var blockedDays = {};
+    state.blocks.filter(function(b){ return b.allDay; }).forEach(function(b){ blockedDays[b.date]=true; });
+
+    var cells = [];
+    for(var i=0;i<firstWeekday;i++) cells.push('<div class="cal-cell cal-empty"></div>');
+    for(var day=1; day<=totalDays; day++){
+      var dateStr = m+'-'+pad2(day);
+      var count = apptCountByDay[dateStr]||0;
+      var isBlocked = !!blockedDays[dateStr];
+      var isToday = dateStr===today;
+      var isPastDay = dateStr < today;
+      cells.push(
+        '<button type="button" class="cal-cell'+(isToday?' cal-today':'')+(isPastDay?' cal-past':'')+(isBlocked?' cal-blocked':'')+'" data-action="openDayDetail" data-date="'+dateStr+'">'+
+          '<span class="cal-daynum">'+day+'</span>'+
+          (count ? '<span class="cal-count">'+count+'</span>' : '')+
+          (isBlocked ? '<span class="cal-blocked-dot" title="Bloqueado"></span>' : '')+
+        '</button>'
+      );
+    }
+
+    var weekdayHeaders = ['D','S','T','Q','Q','S','S'];
+    var html = '<div class="card">'+
+      '<div class="row between" style="margin-bottom:10px;">'+
+        '<button class="btn btn-ghost btn-sm" data-action="calPrevMonth">← Mês anterior</button>'+
+        '<h3 style="margin:0;">'+escapeHtml(monthLabel(m))+'</h3>'+
+        '<button class="btn btn-ghost btn-sm" data-action="calNextMonth">Próximo mês →</button>'+
+      '</div>'+
+      '<div class="cal-grid cal-grid-head">'+weekdayHeaders.map(function(w){ return '<div class="cal-head">'+w+'</div>'; }).join('')+'</div>'+
+      '<div class="cal-grid">'+cells.join('')+'</div>'+
+      '<p class="muted" style="font-size:.78rem; margin-top:10px;">Toque em um dia para ver os horários marcados ou bloquear o dia inteiro. O número no canto mostra quantos agendamentos há naquele dia.</p>'+
+    '</div>';
+    return html;
+  }
+
+  function renderAdminServicos(){
+    var f=state.forms;
+    var html = '<div class="card">'+
+      '<h3>Novo serviço</h3>'+
+      '<div class="field"><label>Nome</label><input type="text" id="f-newServiceName" value="'+escapeHtml(f.newServiceName)+'" placeholder="ex: Esmaltação em gel"></div>'+
+      '<div class="grid2">'+
+        '<div class="field"><label>Valor (R$)</label><input type="number" min="0" step="0.01" id="f-newServicePrice" value="'+escapeHtml(f.newServicePrice)+'" placeholder="45.00"></div>'+
+        '<div class="field"><label>Duração (minutos)</label><input type="number" min="5" step="5" id="f-newServiceDuration" value="'+escapeHtml(f.newServiceDuration)+'" placeholder="60"></div>'+
+      '</div>'+
+      '<div class="field"><label>Fotos do serviço</label>'+
+        (f.newServicePhotoIds.length ? '<div class="photo-strip">'+f.newServicePhotoIds.map(function(pid,idx){
+          return '<div class="photo-chip"><img src="'+pid+'" alt=""><button type="button" data-action="removeNewServicePhoto" data-idx="'+idx+'">×</button></div>';
+        }).join('')+'</div>' : '')+
+        (f.newServicePhotoUploading ? '<div class="muted" style="font-size:.85rem;">Enviando foto…</div>' : (state.assets ? '<input type="file" accept="image/*" multiple id="f-newServicePhoto">' : '<div class="muted" style="font-size:.8rem;">Envio de fotos indisponível neste momento.</div>'))+
+      '</div>'+
+      (f.newServiceError ? '<div class="banner warn">'+escapeHtml(f.newServiceError)+'</div>' : '')+
+      '<button class="btn btn-primary btn-block" data-action="addService">Adicionar serviço</button>'+
+    '</div>';
+
+    html += '<div class="card"><h3>Seus serviços</h3>';
+    if(!state.services.length){
+      html += '<div class="empty">Nenhum serviço cadastrado.</div>';
+    } else {
+      html += state.services.map(function(s){
+        if(f.editingServiceId===s.id){
+          return '<div class="card" style="background:var(--surface-2); box-shadow:none;">'+
+            '<div class="field"><label>Nome</label><input type="text" id="f-editName" value="'+escapeHtml(f.editName)+'"></div>'+
+            '<div class="grid2">'+
+              '<div class="field"><label>Valor (R$)</label><input type="number" min="0" step="0.01" id="f-editPrice" value="'+escapeHtml(f.editPrice)+'"></div>'+
+              '<div class="field"><label>Duração (min)</label><input type="number" min="5" step="5" id="f-editDuration" value="'+escapeHtml(f.editDuration)+'"></div>'+
+            '</div>'+
+            '<div class="field"><label>Fotos</label>'+
+              (f.editPhotoIds.length ? '<div class="photo-strip">'+f.editPhotoIds.map(function(pid,idx){
+                return '<div class="photo-chip"><img src="'+pid+'" alt=""><button type="button" data-action="removeEditPhoto" data-idx="'+idx+'">×</button></div>';
+              }).join('')+'</div>' : '')+
+              (f.editPhotoUploading ? '<div class="muted" style="font-size:.85rem;">Enviando foto…</div>' : (state.assets ? '<input type="file" accept="image/*" multiple id="f-editPhoto">' : ''))+
+            '</div>'+
+            '<div class="row">'+
+              '<button class="btn btn-primary btn-sm" data-action="saveServiceEdit" data-id="'+s.id+'">Salvar</button>'+
+              '<button class="btn btn-ghost btn-sm" data-action="cancelServiceEdit">Cancelar</button>'+
+            '</div>'+
+          '</div>';
+        }
+        return '<div class="row between" style="padding:9px 0; border-bottom:1px solid var(--line);">'+
+          '<div class="row" style="gap:10px;">'+
+            (s.photoIds && s.photoIds[0] ? '<img class="thumb thumb-sm" src="'+s.photoIds[0]+'" alt="">' : '')+
+            '<div><strong>'+escapeHtml(s.name)+'</strong> <span class="muted">· '+formatDuration(s.durationMinutes)+' · '+formatMoney(s.price)+'</span>'+
+            (s.active?'':' <span class="badge badge-off">Inativo</span>')+'</div>'+
+          '</div>'+
+          '<div class="row" style="gap:6px;">'+
+            '<button class="btn btn-ghost btn-sm" data-action="toggleServiceActive" data-id="'+s.id+'">'+(s.active?'Desativar':'Ativar')+'</button>'+
+            '<button class="btn btn-ghost btn-sm" data-action="editService" data-id="'+s.id+'">Editar</button>'+
+            '<button class="btn btn-ghost btn-sm" data-action="deleteService" data-id="'+s.id+'">Excluir</button>'+
+          '</div>'+
+        '</div>';
+      }).join('');
+    }
+    html += '</div>';
+    return html;
+  }
+
+  function renderAdminHorarios(){
+    var f = state.forms;
+    var html = '<div class="card"><h3>Horário de funcionamento</h3>';
+    html += state.hours.map(function(h){
+      var key = h.weekday;
+      var closedVal = (f['hclosed_'+key]!==undefined) ? f['hclosed_'+key] : h.closed;
+      var openVal = (f['hopen_'+key]!==undefined) ? f['hopen_'+key] : h.open;
+      var closeVal = (f['hclose_'+key]!==undefined) ? f['hclose_'+key] : h.close;
+      return '<div class="weekday-row">'+
+        '<strong>'+WEEKDAY_NAME[key]+'</strong>'+
+        '<label style="display:flex; align-items:center; gap:5px; text-transform:none; font-size:.85rem; font-weight:600; color:var(--ink);"><input type="checkbox" id="f-hclosed-'+key+'" '+(closedVal?'checked':'')+' style="width:auto;"> Fechado</label>'+
+        '<input type="time" id="f-hopen-'+key+'" value="'+openVal+'" '+(closedVal?'disabled':'')+'>'+
+        '<input type="time" id="f-hclose-'+key+'" value="'+closeVal+'" '+(closedVal?'disabled':'')+'>'+
+      '</div>';
+    }).join('');
+    html += '<button class="btn btn-primary" style="margin-top:14px;" data-action="saveHours">Salvar horários</button>';
+    if(f.hoursSaved) html += ' <span class="badge badge-ok">Salvo!</span>';
+    html += '</div>';
+    return html;
+  }
+
+  function renderAdminBloqueios(){
+    var f=state.forms;
+    var html = '<div class="card">'+
+      '<h3>Novo bloqueio</h3>'+
+      '<div class="field"><label>Data</label><input type="date" id="f-newBlockDate" value="'+f.newBlockDate+'" min="'+todayStr()+'"></div>'+
+      '<label style="display:flex; align-items:center; gap:6px; text-transform:none; font-size:.85rem; font-weight:600; color:var(--ink); margin-bottom:10px;">'+
+        '<input type="checkbox" id="f-newBlockAllDay" '+(f.newBlockAllDay?'checked':'')+' style="width:auto;"> Bloquear o dia inteiro'+
+      '</label>'+
+      (!f.newBlockAllDay ? '<div class="grid2">'+
+        '<div class="field"><label>Início</label><input type="time" id="f-newBlockStart" value="'+f.newBlockStart+'"></div>'+
+        '<div class="field"><label>Fim</label><input type="time" id="f-newBlockEnd" value="'+f.newBlockEnd+'"></div>'+
+      '</div>' : '')+
+      '<div class="field"><label>Motivo (opcional)</label><input type="text" id="f-newBlockReason" value="'+escapeHtml(f.newBlockReason)+'" placeholder="ex: almoço, viagem, consulta"></div>'+
+      '<button class="btn btn-primary btn-block" data-action="addBlock">Adicionar bloqueio</button>'+
+    '</div>';
+
+    html += '<div class="card"><h3>Bloqueios futuros</h3>'+
+      (state.blocks.length ? state.blocks.map(function(b){
+        return '<div class="row between" style="padding:8px 0; border-bottom:1px solid var(--line);">'+
+          '<span>'+formatDateBR(b.date)+' — '+(b.allDay?'dia todo':b.startTime+'–'+b.endTime)+(b.reason?' · '+escapeHtml(b.reason):'')+'</span>'+
+          '<button class="btn btn-ghost btn-sm" data-action="deleteBlock" data-id="'+b.id+'">Remover</button>'+
+        '</div>';
+      }).join('') : '<div class="empty">Nenhum bloqueio cadastrado.</div>')+
+    '</div>';
+    return html;
+  }
+
+  function renderAdminFinanceiro(){
+    var f = state.forms;
+    var m = state.admin.financeMonth || currentMonthStr();
+    var apptsMonth = state.financeAppointments.filter(function(a){ return a.status==='confirmed'; });
+    // "Estimativa" and "A receber" follow the service date (what's scheduled
+    // this month). "Já recebido" follows paidAt instead — the money only
+    // counts toward a month on the day she actually confirms the payment,
+    // which can be a different month than the appointment itself.
+    var estimativa = apptsMonth.reduce(function(sum,a){ return sum+(Number(a.price)||0); }, 0);
+    var aReceber = apptsMonth.filter(function(a){ return !a.paid; }).reduce(function(sum,a){ return sum+(Number(a.price)||0); }, 0);
+    // state.receivedAppointments now holds durable "revenue" records (see
+    // subscribeReceivedMonth) rather than appointment docs, so every one
+    // present already represents money actually received.
+    var recebido = state.receivedAppointments.reduce(function(sum,a){ return sum+(Number(a.amount)||0); }, 0);
+    var expensesMonth = state.expenses.filter(function(e){ return (e.date||'').slice(0,7)===m; });
+    var gastos = expensesMonth.reduce(function(sum,e){ return sum+(Number(e.amount)||0); }, 0);
+    var saldo = recebido - gastos;
+
+    var html = '<div class="card">'+
+      '<div class="field" style="max-width:220px;"><label>Mês</label><input type="month" id="f-financeMonth" value="'+m+'"></div>'+
+      '<p class="muted" style="font-size:.85rem;">'+escapeHtml(monthLabel(m))+'</p>'+
+    '</div>';
+
+    html += '<div class="stat-row">'+
+      '<div class="stat-tile"><div class="stat-label">Estimativa do mês</div><div class="stat-value" style="font-size:1.05rem;">'+formatMoney(estimativa)+'</div><div class="muted" style="font-size:.68rem;">tudo que está agendado no mês</div></div>'+
+      '<div class="stat-tile"><div class="stat-label">Já recebido</div><div class="stat-value" style="font-size:1.05rem; color:var(--success);">'+formatMoney(recebido)+'</div><div class="muted" style="font-size:.68rem;">pago neste mês (mesmo de agendamentos de outro mês)</div></div>'+
+      '<div class="stat-tile"><div class="stat-label">A receber</div><div class="stat-value" style="font-size:1.05rem;">'+formatMoney(aReceber)+'</div><div class="muted" style="font-size:.68rem;">agendado no mês, ainda não pago</div></div>'+
+    '</div>';
+    html += '<div class="stat-row">'+
+      '<div class="stat-tile"><div class="stat-label">Gastos do mês</div><div class="stat-value" style="font-size:1.05rem; color:var(--danger);">'+formatMoney(gastos)+'</div></div>'+
+      '<div class="stat-tile"><div class="stat-label">Saldo (recebido − gastos)</div><div class="stat-value" style="font-size:1.05rem; color:'+(saldo>=0?'var(--success)':'var(--danger)')+';">'+formatMoney(saldo)+'</div></div>'+
+    '</div>';
+
+    html += '<div class="card"><h3>Agendamentos do mês</h3>'+
+      (apptsMonth.length ? apptsMonth.map(function(a){
+        return '<div class="row between" style="padding:8px 0; border-bottom:1px solid var(--line);">'+
+          '<div><div style="font-size:.85rem;"><strong>'+formatDateShort(a.date)+'</strong> · '+a.startTime+' · '+escapeHtml(a.serviceName)+'</div>'+
+          '<div class="muted" style="font-size:.8rem;">'+escapeHtml(a.clientName||'')+' · '+formatMoney(a.price)+(a.paid && a.paidAt ? ' · pago em '+formatDateShort(a.paidAt) : '')+'</div></div>'+
+          '<button class="btn btn-sm '+(a.paid?'btn-outline':'btn-primary')+'" data-action="togglePaid" data-id="'+a.id+'">'+(a.paid?'Pago ✓':'Marcar pago')+'</button>'+
+        '</div>';
+      }).join('') : '<div class="empty">Nenhum agendamento confirmado neste mês.</div>')+
+    '</div>';
+
+    html += '<div class="card"><h3>Novo gasto</h3>'+
+      '<div class="grid2">'+
+        '<div class="field"><label>Descrição</label><input type="text" id="f-newExpenseDesc" value="'+escapeHtml(f.newExpenseDesc)+'" placeholder="ex: Esmaltes, aluguel..."></div>'+
+        '<div class="field"><label>Valor (R$)</label><input type="number" min="0" step="0.01" id="f-newExpenseAmount" value="'+escapeHtml(f.newExpenseAmount)+'" placeholder="50.00"></div>'+
+      '</div>'+
+      '<div class="field" style="max-width:220px;"><label>Data</label><input type="date" id="f-newExpenseDate" value="'+f.newExpenseDate+'"></div>'+
+      (f.newExpenseError ? '<div class="banner warn">'+escapeHtml(f.newExpenseError)+'</div>' : '')+
+      '<button class="btn btn-primary btn-block" data-action="addExpense">Adicionar gasto</button>'+
+    '</div>';
+
+    html += '<div class="card"><h3>Gastos de '+escapeHtml(monthLabel(m))+'</h3>'+
+      (expensesMonth.length ? expensesMonth.map(function(e){
+        return '<div class="row between" style="padding:8px 0; border-bottom:1px solid var(--line);">'+
+          '<div><div style="font-size:.85rem;">'+escapeHtml(e.description||'')+'</div>'+
+          '<div class="muted" style="font-size:.8rem;">'+formatDateShort(e.date)+'</div></div>'+
+          '<div class="row" style="gap:8px;"><strong>'+formatMoney(e.amount)+'</strong>'+
+          '<button class="btn btn-ghost btn-sm" data-action="deleteExpense" data-id="'+e.id+'">Excluir</button></div>'+
+        '</div>';
+      }).join('') : '<div class="empty">Nenhum gasto registrado neste mês.</div>')+
+    '</div>';
+
+    return html;
+  }
+
+  function renderAdminConfig(){
+    var f=state.forms;
+    var salonVal = f.settingsSalonName!=='' ? f.settingsSalonName : state.site.salonName;
+    var html = '<div class="card">'+
+      '<h3>Dados dos agendamentos</h3>'+
+      '<p class="muted" style="font-size:.82rem;">Para economizar espaço e proteger os dados das clientes, agendamentos e valores recebidos com mais de '+RETENTION_MONTHS+' meses são apagados automaticamente (nome, telefone, CPF, histórico do Financeiro etc). Exceção: agendamentos não pagos (dívidas) nunca são apagados sozinhos — ficam guardados até serem pagos ou desmarcados, não importa a idade.</p>'+
+    '</div>';
+    html += '<div class="card">'+
+      '<h3>Nome do salão</h3>'+
+      '<div class="field"><input type="text" id="f-settingsSalonName" value="'+escapeHtml(salonVal)+'"></div>'+
+      '<button class="btn btn-primary" data-action="saveSalonName">Salvar nome</button>'+
+      (f.settingsSaved ? ' <span class="badge badge-ok">Salvo!</span>' : '')+
+    '</div>';
+    var pwUserVal = f.pwNewUsername!=='' ? f.pwNewUsername : (state.site.username||DEFAULT_USERNAME);
+    html += '<div class="card">'+
+      '<h3>Acesso da profissional</h3>'+
+      '<p class="muted" style="font-size:.82rem;">Sua senha fica guardada como um hash — nem a própria Laysa Nails consegue ver a senha depois de salva.</p>'+
+      '<div class="field"><label>Senha atual (para confirmar)</label><input type="password" id="f-pwCurrent" value="'+escapeHtml(f.pwCurrent)+'"></div>'+
+      '<div class="field"><label>Usuário</label><input type="text" id="f-pwNewUsername" autocapitalize="off" autocorrect="off" value="'+escapeHtml(pwUserVal)+'"></div>'+
+      '<div class="field"><label>Nova senha (deixe em branco para manter a atual)</label><input type="password" id="f-pwNew" value="'+escapeHtml(f.pwNew)+'"></div>'+
+      '<div class="field"><label>Confirmar nova senha</label><input type="password" id="f-pwNew2" value="'+escapeHtml(f.pwNew2)+'"></div>'+
+      (f.pwError ? '<div class="banner warn">'+escapeHtml(f.pwError)+'</div>' : '')+
+      '<button class="btn btn-primary" data-action="changePassword">Salvar acesso</button>'+
+      (f.pwSaved ? ' <span class="badge badge-ok">Salvo!</span>' : '')+
+    '</div>';
+    return html;
+  }
+
+  function renderModal(){
+    if(state.confirm){
+      return '<div class="modal-overlay" data-action="closeConfirmBg">'+
+        '<div class="modal">'+
+          '<p style="margin-top:0;">'+escapeHtml(state.confirm.message)+'</p>'+
+          '<div class="row" style="justify-content:flex-end;">'+
+            '<button class="btn btn-ghost" data-action="closeConfirmBg">Cancelar</button>'+
+            '<button class="btn '+(state.confirm.danger?'btn-danger':'btn-primary')+'" data-action="confirmYes">Confirmar</button>'+
+          '</div>'+
+        '</div>'+
+      '</div>';
+    }
+    if(state.serviceDetail){
+      var s = state.services.filter(function(x){ return x.id===state.serviceDetail.id; })[0];
+      if(!s) return '';
+      var photos = s.photoIds || [];
+      var addedNow = state.booking.services.indexOf(s.id)!==-1;
+      return '<div class="modal-overlay" data-action="closeServiceDetailBg">'+
+        '<div class="modal modal-lg">'+
+          (photos.length ? '<div class="gallery-grid">'+photos.map(function(pid){ return '<img src="'+pid+'" alt="'+escapeHtml(s.name)+'">'; }).join('')+'</div>' : '<p class="muted" style="font-size:.85rem;">Sem fotos cadastradas para este serviço.</p>')+
+          '<h2 style="margin:0 0 4px;">'+escapeHtml(s.name)+'</h2>'+
+          '<div class="row between" style="margin-bottom:14px;">'+
+            '<span class="muted">Duração aproximada: '+formatDuration(s.durationMinutes)+'</span>'+
+            '<span class="price" style="font-size:1.2rem;">'+formatMoney(s.price)+'</span>'+
+          '</div>'+
+          '<div class="row" style="justify-content:flex-end;">'+
+            '<button class="btn btn-ghost" data-action="closeServiceDetailBg">Fechar</button>'+
+            (state.serviceDetail.forBooking ? '<button class="btn '+(addedNow?'btn-outline':'btn-primary')+'" data-action="toggleCartItem" data-id="'+s.id+'">'+(addedNow?'Remover':'Adicionar')+'</button>' : '')+
+          '</div>'+
+        '</div>'+
+      '</div>';
+    }
+    if(state.admin.dayDetailDate){
+      var dd = state.admin.dayDetailDate;
+      var pd = dd.split('-'); var wdD = new Date(+pd[0],+pd[1]-1,+pd[2]).getDay();
+      var hoursDocD = state.hours.filter(function(h){ return h.weekday===wdD; })[0];
+      var dayApptsD = state.calendarAppointments.filter(function(a){ return a.date===dd; }).sort(function(a,b2){ return a.startTime.localeCompare(b2.startTime); });
+      var dayBlocksD = state.blocks.filter(function(b){ return b.date===dd; });
+      var fullyBlocked = dayBlocksD.some(function(b){ return b.allDay; });
+      return '<div class="modal-overlay" data-action="closeDayDetailBg">'+
+        '<div class="modal modal-lg">'+
+          '<h2 style="margin:0 0 4px;">'+formatDateBR(dd)+'</h2>'+
+          '<p class="muted" style="font-size:.85rem;">'+(hoursDocD && !hoursDocD.closed ? 'Horário: '+hoursDocD.open+' às '+hoursDocD.close : 'Fechado neste dia da semana')+'</p>'+
+          (dayBlocksD.length ? '<div class="row" style="flex-wrap:wrap; gap:6px; margin:8px 0;">'+dayBlocksD.map(function(b){
+            return '<span class="badge badge-off">Bloqueado: '+(b.allDay?'dia todo':b.startTime+'–'+b.endTime)+(b.reason?' ('+escapeHtml(b.reason)+')':'')+'</span>';
+          }).join(' ')+'</div>' : '')+
+          '<div class="stack" style="margin:10px 0 14px;">'+
+            (dayApptsD.length ? dayApptsD.map(function(a){
+              var cancelledD = a.status==='cancelled';
+              return '<div class="appt-row" style="'+(cancelledD?'opacity:.55;':'')+'">'+
+                '<div><div class="appt-time">'+a.startTime+' – '+minutesToTime(timeToMinutes(a.startTime)+(a.durationMinutes||0))+'</div>'+
+                '<div style="font-size:.85rem;">'+escapeHtml(a.serviceName)+' · '+escapeHtml(a.clientName||'')+(a.clientPhone?' · '+escapeHtml(a.clientPhone):'')+'</div>'+
+                (cancelledD ? '<span class="badge badge-off">Cancelado</span>' : '<span class="badge '+(a.paid?'badge-ok':'badge-gold')+'">'+(a.paid?'Pago':'Pendente')+'</span>')+
+                '</div>'+
+              '</div>';
+            }).join('') : '<div class="empty">Nenhum agendamento neste dia.</div>')+
+          '</div>'+
+          '<div class="row" style="justify-content:flex-end; flex-wrap:wrap; gap:8px;">'+
+            '<button class="btn btn-ghost" data-action="closeDayDetailBg">Fechar</button>'+
+            (dayApptsD.length && dd>=todayStr() ? '<button class="btn btn-outline" data-action="goToAgendaDay" data-date="'+dd+'">Abrir na Agenda</button>' : '')+
+            (fullyBlocked || dd<todayStr() ? '' : '<button class="btn btn-danger" data-action="blockWholeDay" data-date="'+dd+'">Bloquear o dia inteiro</button>')+
+          '</div>'+
+        '</div>'+
+      '</div>';
+    }
+    return '';
+  }
+
+  function render(){
+    document.getElementById('brandName').textContent = state.site.salonName || 'Laysa Nails';
+    var tabsEl = document.getElementById('tabs');
+    var app = document.getElementById('app');
+
+    if(state.portal==='owner'){
+      tabsEl.innerHTML = '';
+      app.innerHTML = renderOwner();
+    } else {
+      tabsEl.innerHTML = clientTabsHtml();
+      var html='';
+      if(state.view==='inicio') html = renderInicio();
+      else if(state.view==='agendar') html = renderAgendar();
+      else if(state.view==='meus') html = renderMeus();
+      app.innerHTML = html;
+    }
+    document.getElementById('modal-root').innerHTML = renderModal();
+
+    var fab = document.getElementById('fabWhats');
+    if(state.portal==='client'){
+      fab.hidden = false;
+      fab.href = waLink(OWNER_WHATSAPP, 'Olá! Vim pelo site do '+(state.site.salonName||'Laysa Nails')+'.');
+    } else {
+      fab.hidden = true;
+    }
+    avoidFabOverlap();
+  }
+
+  // The floating WhatsApp button is fixed to the corner of the screen, so on
+  // a short page (few services, no scrolling needed) its own last card can
+  // end up right underneath it. Rather than guess spacing for every possible
+  // page length, just check after each render whether the last thing on the
+  // page currently sits under the button, and dim it out of the way when it
+  // does — it reappears as soon as the content changes.
+  function avoidFabOverlap(){
+    var fab = document.getElementById('fabWhats');
+    if(!fab || fab.hidden){ if(fab) fab.classList.remove('fab-dim'); return; }
+    var app = document.getElementById('app');
+    var last = app && app.lastElementChild;
+    if(!last){ fab.classList.remove('fab-dim'); return; }
+    var lr = last.getBoundingClientRect();
+    var fr = fab.getBoundingClientRect();
+    var overlaps = lr.bottom > fr.top && lr.top < fr.bottom && lr.right > fr.left && lr.left < fr.right;
+    fab.classList.toggle('fab-dim', overlaps);
+  }
+
+  // ---------- actions ----------
+  async function writeAppointment(data){
+    if(!state.db) return null;
+    return state.db.collection('appointments').add(data);
+  }
+
+  // ---------- pre-written WhatsApp messages ----------
+  function apptFirstName(a){ return (a.clientName||'').trim().split(' ')[0]||''; }
+  function apptConfirmMsg(a){
+    var first = apptFirstName(a);
+    return 'Olá'+(first?' '+first:'')+'! Podemos confirmar seu agendamento de '+a.serviceName+' às '+a.startTime+' do dia '+formatDateNum(a.date)+'?';
+  }
+  function apptCancelMsg(a){
+    var first = apptFirstName(a);
+    return 'Olá'+(first?' '+first:'')+'! Infelizmente precisamos desmarcar seu agendamento de '+a.serviceName+' às '+a.startTime+' do dia '+formatDateNum(a.date)+'. Qualquer dúvida, estamos à disposição!';
+  }
+  function apptRescheduleMsg(a, oldDate, oldTime, newDate, newTime){
+    var first = apptFirstName(a);
+    return 'Olá'+(first?' '+first:'')+'! Podemos alterar o horário do seu agendamento de '+oldTime+' do dia '+formatDateNum(oldDate)+' para '+newTime+' do dia '+formatDateNum(newDate)+'?';
+  }
+  function clientCancelRequestMsg(a){
+    var first = apptFirstName(a);
+    return 'Olá! Aqui é'+(first?' '+first:'')+'. Gostaria de cancelar meu agendamento de '+a.serviceName+' às '+a.startTime+' do dia '+formatDateNum(a.date)+'. Pode confirmar o cancelamento?';
+  }
+
+  function handleClick(e){
+    var el = e.target.closest('[data-action]');
+    if(!el) return;
+    var action = el.getAttribute('data-action');
+    var f = state.forms, b = state.booking;
+
+    if(action==='setView'){ setView(el.getAttribute('data-view')); return; }
+
+    if(action==='bookingStep1Next'){
+      var name = (document.getElementById('f-bookingName')||{}).value || '';
+      var cpf = (document.getElementById('f-bookingCPF')||{}).value || '';
+      var phone = (document.getElementById('f-bookingPhone')||{}).value || '';
+      f.bookingName = name.trim(); f.bookingCPF = cpf; f.bookingPhone = phone;
+      if(!f.bookingName){ f.bookingError='Informe seu nome.'; render(); return; }
+      if(!isValidCPF(f.bookingCPF)){ f.bookingError='CPF inválido. Confira os números.'; render(); return; }
+      if(onlyDigits(f.bookingPhone).length<10){ f.bookingError='Telefone inválido.'; render(); return; }
+      f.bookingError='';
+      b.step=2; render(); return;
+    }
+    if(action==='bookingBack'){
+      if(b.step>1) b.step -= 1;
+      render(); return;
+    }
+    if(action==='bookingStep2Next'){
+      if(!b.services.length) return;
+      b.date=''; b.time=''; b.step=3; render(); return;
+    }
+    if(action==='openServiceDetail'){
+      openServiceDetail(el.getAttribute('data-id'), el.getAttribute('data-booking')==='1');
+      return;
+    }
+    if(action==='closeServiceDetailBg'){ if(e.target===el) closeServiceDetail(); return; }
+    if(action==='toggleCartItem'){
+      var tid = el.getAttribute('data-id');
+      var idx = b.services.indexOf(tid);
+      if(idx===-1) b.services.push(tid); else b.services.splice(idx,1);
+      closeServiceDetail();
+      return;
+    }
+    if(action==='removeCartItem'){
+      var rid = el.getAttribute('data-id');
+      var ridx = b.services.indexOf(rid);
+      if(ridx!==-1) b.services.splice(ridx,1);
+      render(); return;
+    }
+    if(action==='pickTime'){
+      b.time = el.getAttribute('data-time'); b.step=4; f.bookingError=''; render(); return;
+    }
+    if(action==='confirmBooking'){
+      var cartC = cartTotals(b.services);
+      if(!cartC.items.length){ f.bookingError='Escolha ao menos um serviço.'; render(); return; }
+      var freshSlots = computeSlots(b.date, cartC.duration, null, CLIENT_BOOKING_LEAD_MINUTES);
+      if(freshSlots.indexOf(b.time)===-1){ f.bookingError='Esse horário acabou de ficar indisponível. Escolha outro.'; b.step=3; render(); return; }
+      el.disabled = true;
+      writeAppointment({
+        date:b.date, startTime:b.time, durationMinutes:cartC.duration,
+        serviceId:cartC.items[0].id, serviceName:cartC.label, price:cartC.price,
+        services: cartC.items.map(function(s){ return {serviceId:s.id, serviceName:s.name, price:s.price, durationMinutes:s.durationMinutes}; }),
+        clientName:f.bookingName, clientCPF:onlyDigits(f.bookingCPF), clientPhone:onlyDigits(f.bookingPhone),
+        status:'confirmed', paid:false, paidAt:null, source:'client', createdAt:new Date().toISOString()
+      }).then(function(){
+        b.step=5; f.bookingError=''; render();
+      }).catch(function(){
+        f.bookingError='Não foi possível confirmar agora. Tente novamente.'; render();
+      });
+      return;
+    }
+    if(action==='bookAnother'){
+      state.booking = {step:1, services:[], date:'', time:''};
+      f.bookingError=''; render(); return;
+    }
+    if(action==='goToMeus'){
+      f.meusCPF = maskCPF(f.bookingCPF); f.meusPhone = maskPhone(f.bookingPhone);
+      state.meus.identified = true;
+      state.view='meus'; render();
+      loadMeusAppointments();
+      return;
+    }
+
+    if(action==='findMeus'){
+      var cpf2 = (document.getElementById('f-meusCPF')||{}).value || '';
+      var phone2 = (document.getElementById('f-meusPhone')||{}).value || '';
+      f.meusCPF=cpf2; f.meusPhone=phone2;
+      if(!isValidCPF(cpf2) || onlyDigits(phone2).length<10){ f.meusError='Confira o CPF e telefone informados.'; render(); return; }
+      f.meusError=''; state.meus.identified=true; render();
+      loadMeusAppointments();
+      return;
+    }
+    if(action==='resetMeus'){ state.meus.identified=false; state.meus.list=[]; render(); return; }
+
+    if(action==='doLogin'){
+      var user = ((document.getElementById('f-loginUsername')||{}).value || '').trim();
+      var pw = (document.getElementById('f-loginPassword')||{}).value || '';
+      f.loginUsername = user; f.loginPassword = pw;
+      if(user.toLowerCase() !== (state.site.username||DEFAULT_USERNAME).toLowerCase()){
+        f.loginError='Usuário ou senha incorretos.'; render(); return;
+      }
+      sha256Hex(pw).then(function(hash){
+        if(state.site.passwordHash && hash===state.site.passwordHash){
+          state.admin.loggedIn=true; f.loginPassword=''; f.loginError='';
+          purgeOldData();
+        } else {
+          f.loginError='Usuário ou senha incorretos.';
+        }
+        render();
+      });
+      return;
+    }
+    if(action==='logout'){ state.admin.loggedIn=false; render(); return; }
+    if(action==='setAdminTab'){ state.admin.tab = el.getAttribute('data-tab'); state.admin.showNewAppt=false; render(); return; }
+
+    if(action==='toggleNewAppt'){
+      state.admin.showNewAppt = !state.admin.showNewAppt;
+      f.newApptError=''; f.newApptServiceIds=[]; f.newApptTime=''; f.newApptCustomTime='';
+      render(); return;
+    }
+    if(action==='toggleAdminCartItem'){
+      var atid = el.getAttribute('data-id');
+      var aidx = f.newApptServiceIds.indexOf(atid);
+      if(aidx===-1) f.newApptServiceIds.push(atid); else f.newApptServiceIds.splice(aidx,1);
+      f.newApptTime=''; render(); return;
+    }
+    if(action==='pickAdminTime'){ f.newApptTime = el.getAttribute('data-time'); f.newApptCustomTime=''; render(); return; }
+    if(action==='saveAdminAppt'){
+      var adminCartS = cartTotals(f.newApptServiceIds);
+      var name3 = f.newApptName.trim();
+      var time3 = f.newApptCustomTime.trim() || f.newApptTime;
+      if(!adminCartS.items.length){ f.newApptError='Escolha ao menos um serviço.'; render(); return; }
+      if(!name3){ f.newApptError='Informe o nome do cliente.'; render(); return; }
+      if(!time3 || !/^\d{1,2}:\d{2}$/.test(time3)){ f.newApptError='Escolha ou digite um horário válido.'; render(); return; }
+      var hh=time3.split(':'); time3 = pad2(+hh[0])+':'+pad2(+hh[1]);
+      writeAppointment({
+        date: state.admin.selectedDate, startTime:time3, durationMinutes:adminCartS.duration,
+        serviceId:adminCartS.items[0].id, serviceName:adminCartS.label, price:adminCartS.price,
+        services: adminCartS.items.map(function(s){ return {serviceId:s.id, serviceName:s.name, price:s.price, durationMinutes:s.durationMinutes}; }),
+        clientName:name3, clientCPF:onlyDigits(f.newApptCPF), clientPhone:onlyDigits(f.newApptPhone),
+        status:'confirmed', paid:false, paidAt:null, source:'admin', createdAt:new Date().toISOString()
+      }).then(function(){
+        f.newApptName=''; f.newApptCPF=''; f.newApptPhone=''; f.newApptServiceIds=[]; f.newApptTime=''; f.newApptCustomTime=''; f.newApptError='';
+        state.admin.showNewAppt=false; render();
+      }).catch(function(){ f.newApptError='Erro ao salvar. Tente novamente.'; render(); });
+      return;
+    }
+    if(action==='cancelAppt'){
+      var idc = el.getAttribute('data-id');
+      var apptC = state.appointments.filter(function(x){ return x.id===idc; })[0];
+      askConfirm('Desmarcar este agendamento?', function(){
+        state.db.collection('appointments').doc(idc).update({status:'cancelled'}).catch(function(){});
+        // If it had already been marked paid, treat the cancellation as
+        // undoing that payment too, so it stops counting as revenue.
+        state.db.collection('revenue').doc(idc).delete().catch(function(){});
+        if(apptC && apptC.clientPhone){
+          window.open(waLink(apptC.clientPhone, apptCancelMsg(apptC)), '_blank', 'noopener');
+        }
+      }, {danger:true});
+      return;
+    }
+    if(action==='openReschedule'){
+      var ridOpen = el.getAttribute('data-id');
+      var apptOpen = state.appointments.filter(function(x){ return x.id===ridOpen; })[0];
+      f.rescheduleApptId = ridOpen; f.rescheduleDate = apptOpen ? apptOpen.date : ''; f.rescheduleTime=''; f.rescheduleCustomTime=''; f.rescheduleError='';
+      render(); return;
+    }
+    if(action==='closeReschedule'){
+      f.rescheduleApptId=null; f.rescheduleError=''; render(); return;
+    }
+    if(action==='pickRescheduleTime'){ f.rescheduleTime = el.getAttribute('data-time'); f.rescheduleCustomTime=''; render(); return; }
+    if(action==='saveReschedule'){
+      var ridSave = el.getAttribute('data-id');
+      var apptSave = state.appointments.filter(function(x){ return x.id===ridSave; })[0];
+      if(!apptSave){ f.rescheduleApptId=null; render(); return; }
+      var newDate = f.rescheduleDate || apptSave.date;
+      var newTime = f.rescheduleCustomTime.trim() || f.rescheduleTime;
+      if(!newTime || !/^\d{1,2}:\d{2}$/.test(newTime)){ f.rescheduleError='Escolha ou digite um horário válido.'; render(); return; }
+      var hhR=newTime.split(':'); newTime = pad2(+hhR[0])+':'+pad2(+hhR[1]);
+      var oldDate = apptSave.date, oldTime = apptSave.startTime;
+      // Open WhatsApp synchronously, still inside the click handler, so the
+      // browser's popup blocker sees it as a direct result of the user's tap
+      // rather than something opened later from a promise callback.
+      if(apptSave.clientPhone){
+        window.open(waLink(apptSave.clientPhone, apptRescheduleMsg(apptSave, oldDate, oldTime, newDate, newTime)), '_blank', 'noopener');
+      }
+      state.db.collection('appointments').doc(ridSave).update({date:newDate, startTime:newTime}).catch(function(){});
+      f.rescheduleApptId=null; f.rescheduleDate=''; f.rescheduleTime=''; f.rescheduleCustomTime=''; f.rescheduleError='';
+      render();
+      return;
+    }
+    if(action==='deleteAppt'){
+      var idd = el.getAttribute('data-id');
+      askConfirm('Excluir este agendamento permanentemente?', function(){
+        state.db.collection('appointments').doc(idd).delete().catch(function(){});
+      }, {danger:true});
+      return;
+    }
+
+    if(action==='addService'){
+      var n=(document.getElementById('f-newServiceName')||{}).value||'';
+      var pr=(document.getElementById('f-newServicePrice')||{}).value||'';
+      var du=(document.getElementById('f-newServiceDuration')||{}).value||'';
+      n=n.trim();
+      if(!n || !pr || !du || Number(pr)<0 || Number(du)<=0){ f.newServiceError='Preencha nome, valor e duração corretamente.'; render(); return; }
+      state.db.collection('services').add({name:n, price:Number(pr), durationMinutes:Number(du), active:true, photoIds:f.newServicePhotoIds.slice(), createdAt:new Date().toISOString()}).then(function(){
+        f.newServiceName=''; f.newServicePrice=''; f.newServiceDuration=''; f.newServicePhotoIds=[]; f.newServiceError=''; render();
+      });
+      return;
+    }
+    if(action==='removeNewServicePhoto'){
+      var idx1 = Number(el.getAttribute('data-idx'));
+      var oldId = f.newServicePhotoIds[idx1];
+      f.newServicePhotoIds.splice(idx1,1); render();
+      if(oldId && state.assets) state.assets.delete(oldId).catch(function(){});
+      return;
+    }
+    if(action==='removeEditPhoto'){
+      var idx2 = Number(el.getAttribute('data-idx'));
+      var oldId2 = f.editPhotoIds[idx2];
+      f.editPhotoIds.splice(idx2,1); render();
+      if(oldId2 && state.assets) state.assets.delete(oldId2).catch(function(){});
+      return;
+    }
+    if(action==='toggleServiceActive'){
+      var sid=el.getAttribute('data-id'); var s=state.services.filter(function(x){return x.id===sid;})[0];
+      if(s) state.db.collection('services').doc(sid).update({active: !s.active}).catch(function(){});
+      return;
+    }
+    if(action==='editService'){
+      var sid2=el.getAttribute('data-id'); var s2=state.services.filter(function(x){return x.id===sid2;})[0];
+      if(s2){ f.editingServiceId=sid2; f.editName=s2.name; f.editPrice=String(s2.price); f.editDuration=String(s2.durationMinutes); f.editPhotoIds=(s2.photoIds||[]).slice(); render(); }
+      return;
+    }
+    if(action==='cancelServiceEdit'){ f.editingServiceId=null; render(); return; }
+    if(action==='saveServiceEdit'){
+      var sid3=el.getAttribute('data-id');
+      var n3=(document.getElementById('f-editName')||{}).value||'';
+      var pr3=(document.getElementById('f-editPrice')||{}).value||'';
+      var du3=(document.getElementById('f-editDuration')||{}).value||'';
+      state.db.collection('services').doc(sid3).update({name:n3.trim(), price:Number(pr3), durationMinutes:Number(du3), photoIds:f.editPhotoIds.slice()}).then(function(){
+        f.editingServiceId=null; render();
+      });
+      return;
+    }
+    if(action==='deleteService'){
+      var sid4=el.getAttribute('data-id');
+      askConfirm('Excluir este serviço?', function(){ state.db.collection('services').doc(sid4).delete().catch(function(){}); }, {danger:true});
+      return;
+    }
+
+    if(action==='saveHours'){
+      var promises = WEEKDAY_ORDER.map(function(w){
+        var closedEl = document.getElementById('f-hclosed-'+w);
+        var openEl = document.getElementById('f-hopen-'+w);
+        var closeEl = document.getElementById('f-hclose-'+w);
+        var closedV = closedEl ? closedEl.checked : false;
+        var openV = openEl ? openEl.value : '09:00';
+        var closeV = closeEl ? closeEl.value : '19:00';
+        return state.db.collection('hours').doc(String(w)).set({weekday:w, closed:closedV, open:openV, close:closeV});
+      });
+      Promise.all(promises).then(function(){ f.hoursSaved=true; render(); setTimeout(function(){ f.hoursSaved=false; render(); }, 2500); });
+      return;
+    }
+
+    if(action==='addBlock'){
+      var date4=(document.getElementById('f-newBlockDate')||{}).value||todayStr();
+      var allDay4=(document.getElementById('f-newBlockAllDay')||{}).checked;
+      var start4 = allDay4 ? '' : ((document.getElementById('f-newBlockStart')||{}).value||'09:00');
+      var end4 = allDay4 ? '' : ((document.getElementById('f-newBlockEnd')||{}).value||'10:00');
+      var reason4 = (document.getElementById('f-newBlockReason')||{}).value||'';
+      state.db.collection('blocks').add({date:date4, allDay:allDay4, startTime:start4, endTime:end4, reason:reason4.trim(), createdAt:new Date().toISOString()}).then(function(){
+        f.newBlockReason=''; render();
+      });
+      return;
+    }
+    if(action==='deleteBlock'){
+      var bid=el.getAttribute('data-id');
+      askConfirm('Remover este bloqueio?', function(){ state.db.collection('blocks').doc(bid).delete().catch(function(){}); }, {danger:true});
+      return;
+    }
+
+    if(action==='togglePaid'){
+      var pid = el.getAttribute('data-id');
+      var apptPaid = state.financeAppointments.filter(function(x){ return x.id===pid; })[0];
+      if(!apptPaid) return;
+      var nowPaid = !apptPaid.paid;
+      // The value only counts toward a month on the day it's actually
+      // confirmed paid (paidAt), not the day the service is scheduled for.
+      var paidDate = nowPaid ? todayStr() : null;
+      state.db.collection('appointments').doc(pid).update({paid: nowPaid, paidAt: paidDate}).catch(function(){});
+      // Also mirror it into a "revenue" record, independent of the
+      // appointment itself, so it shows up in Financeiro even after the
+      // appointment is cleared out — both are purged together after
+      // RETENTION_MONTHS by purgeOldData(), unlike an unpaid debt.
+      if(nowPaid){
+        state.db.collection('revenue').doc(pid).set({
+          date: paidDate, amount: Number(apptPaid.price)||0, serviceName: apptPaid.serviceName||'', createdAt:new Date().toISOString()
+        }).catch(function(){});
+      } else {
+        state.db.collection('revenue').doc(pid).delete().catch(function(){});
+      }
+      return;
+    }
+    if(action==='addExpense'){
+      var descE=(document.getElementById('f-newExpenseDesc')||{}).value||'';
+      var amtE=(document.getElementById('f-newExpenseAmount')||{}).value||'';
+      var dateE=(document.getElementById('f-newExpenseDate')||{}).value||f.newExpenseDate;
+      descE=descE.trim();
+      if(!descE || !amtE || Number(amtE)<=0 || !dateE){ f.newExpenseError='Preencha descrição, valor e data corretamente.'; render(); return; }
+      state.db.collection('expenses').add({description:descE, amount:Number(amtE), date:dateE, createdAt:new Date().toISOString()}).then(function(){
+        f.newExpenseDesc=''; f.newExpenseAmount=''; f.newExpenseDate=todayStr(); f.newExpenseError=''; render();
+      });
+      return;
+    }
+    if(action==='deleteExpense'){
+      var eid=el.getAttribute('data-id');
+      askConfirm('Excluir este gasto?', function(){ state.db.collection('expenses').doc(eid).delete().catch(function(){}); }, {danger:true});
+      return;
+    }
+
+    if(action==='calPrevMonth'){
+      state.admin.calendarMonth = shiftMonth(state.admin.calendarMonth, -1);
+      subscribeCalendarMonth(state.admin.calendarMonth); render(); return;
+    }
+    if(action==='calNextMonth'){
+      state.admin.calendarMonth = shiftMonth(state.admin.calendarMonth, 1);
+      subscribeCalendarMonth(state.admin.calendarMonth); render(); return;
+    }
+    if(action==='openDayDetail'){ state.admin.dayDetailDate = el.getAttribute('data-date'); render(); return; }
+    if(action==='closeDayDetailBg'){ if(e.target===el){ state.admin.dayDetailDate=null; render(); } return; }
+    if(action==='goToAgendaDay'){
+      var gDate = el.getAttribute('data-date');
+      state.admin.selectedDate = gDate; state.admin.tab='agenda'; state.admin.dayDetailDate=null; state.admin.showNewAppt=false;
+      render(); return;
+    }
+    if(action==='blockWholeDay'){
+      var bDate = el.getAttribute('data-date');
+      askConfirm('Bloquear o dia inteiro em '+formatDateShort(bDate)+'? Nenhum horário poderá ser agendado nesse dia.', function(){
+        state.db.collection('blocks').add({date:bDate, allDay:true, startTime:'', endTime:'', reason:'', createdAt:new Date().toISOString()}).catch(function(){});
+        state.admin.dayDetailDate=null; render();
+      }, {danger:true});
+      return;
+    }
+
+    if(action==='saveSalonName'){
+      var sn=(document.getElementById('f-settingsSalonName')||{}).value||'';
+      sn=sn.trim() || 'Laysa Nails';
+      state.db.doc('config/site').update({salonName:sn}).then(function(){
+        f.settingsSalonName=sn; f.settingsSaved=true; render();
+        setTimeout(function(){ f.settingsSaved=false; render(); }, 2500);
+      });
+      return;
+    }
+    if(action==='changePassword'){
+      var cur=(document.getElementById('f-pwCurrent')||{}).value||'';
+      var newUser=((document.getElementById('f-pwNewUsername')||{}).value||'').trim();
+      var np=(document.getElementById('f-pwNew')||{}).value||'';
+      var np2=(document.getElementById('f-pwNew2')||{}).value||'';
+      f.pwCurrent=cur; f.pwNewUsername=newUser; f.pwNew=np; f.pwNew2=np2;
+      sha256Hex(cur).then(function(curHash){
+        if(curHash!==state.site.passwordHash){ f.pwError='Senha atual incorreta.'; render(); return; }
+        if(!newUser){ f.pwError='Informe um usuário.'; render(); return; }
+        if(np || np2){
+          if(np.length<4){ f.pwError='A nova senha deve ter pelo menos 4 caracteres.'; render(); return; }
+          if(np!==np2){ f.pwError='As senhas não coincidem.'; render(); return; }
+        }
+        var applyUpdate = function(passwordHash){
+          state.db.doc('config/site').update({username:newUser, passwordHash:passwordHash}).then(function(){
+            f.pwCurrent=''; f.pwNew=''; f.pwNew2=''; f.pwError=''; f.pwSaved=true; render();
+            setTimeout(function(){ f.pwSaved=false; render(); }, 2500);
+          });
+        };
+        if(np){ sha256Hex(np).then(applyUpdate); } else { applyUpdate(state.site.passwordHash); }
+      });
+      return;
+    }
+
+    if(action==='closeConfirmBg'){ if(e.target===el) closeConfirm(); return; }
+    if(action==='confirmYes'){
+      var cb = state.confirm && state.confirm.onYes;
+      closeConfirm();
+      if(cb) cb();
+      return;
+    }
+  }
+
+  function handleInput(e){
+    var t = e.target;
+    if(!t.id) return;
+    var f = state.forms;
+    if(t.id==='f-bookingCPF'){ f.bookingCPF=applyMask(t, maskCPF); return; }
+    if(t.id==='f-bookingPhone'){ f.bookingPhone=applyMask(t, maskPhone); return; }
+    if(t.id==='f-bookingName'){ f.bookingName=t.value; return; }
+    if(t.id==='f-meusCPF'){ f.meusCPF=applyMask(t, maskCPF); return; }
+    if(t.id==='f-meusPhone'){ f.meusPhone=applyMask(t, maskPhone); return; }
+    if(t.id==='f-loginUsername'){ f.loginUsername=t.value; return; }
+    if(t.id==='f-loginPassword'){ f.loginPassword=t.value; return; }
+    if(t.id==='f-newServiceName'){ f.newServiceName=t.value; return; }
+    if(t.id==='f-newServicePrice'){ f.newServicePrice=t.value; return; }
+    if(t.id==='f-newServiceDuration'){ f.newServiceDuration=t.value; return; }
+    if(t.id==='f-editName'){ f.editName=t.value; return; }
+    if(t.id==='f-editPrice'){ f.editPrice=t.value; return; }
+    if(t.id==='f-editDuration'){ f.editDuration=t.value; return; }
+    if(t.id==='f-newBlockReason'){ f.newBlockReason=t.value; return; }
+    if(t.id==='f-newExpenseDesc'){ f.newExpenseDesc=t.value; return; }
+    if(t.id==='f-newExpenseAmount'){ f.newExpenseAmount=t.value; return; }
+    if(t.id==='f-newApptName'){ f.newApptName=t.value; return; }
+    if(t.id==='f-newApptCPF'){ f.newApptCPF=applyMask(t, maskCPF); return; }
+    if(t.id==='f-newApptPhone'){ f.newApptPhone=applyMask(t, maskPhone); return; }
+    if(t.id==='f-newApptCustomTime'){ f.newApptCustomTime=t.value; return; }
+    if(t.id==='f-rescheduleCustomTime'){ f.rescheduleCustomTime=t.value; return; }
+    if(t.id==='f-settingsSalonName'){ f.settingsSalonName=t.value; return; }
+    if(t.id==='f-pwCurrent'){ f.pwCurrent=t.value; return; }
+    if(t.id==='f-pwNewUsername'){ f.pwNewUsername=t.value; return; }
+    if(t.id==='f-pwNew'){ f.pwNew=t.value; return; }
+    if(t.id==='f-pwNew2'){ f.pwNew2=t.value; return; }
+  }
+
+  function handleChange(e){
+    var t=e.target, f=state.forms;
+    if(t.id==='f-bookingDate'){ state.booking.date=t.value; state.booking.time=''; render(); return; }
+    if(t.id==='f-adminDate'){ state.admin.selectedDate=t.value; render(); return; }
+    if(t.id==='f-rescheduleDate'){ f.rescheduleDate=t.value; f.rescheduleTime=''; render(); return; }
+    if(t.id==='f-newExpenseDate'){ f.newExpenseDate=t.value; return; }
+    if(t.id==='f-financeMonth'){ if(t.value){ state.admin.financeMonth=t.value; subscribeFinanceMonth(t.value); subscribeReceivedMonth(t.value); render(); } return; }
+    if(t.id==='f-newBlockDate'){ f.newBlockDate=t.value; return; }
+    if(t.id==='f-newBlockAllDay'){ f.newBlockAllDay=t.checked; render(); return; }
+    if(t.id==='f-newBlockStart'){ f.newBlockStart=t.value; return; }
+    if(t.id==='f-newBlockEnd'){ f.newBlockEnd=t.value; return; }
+    if(t.id==='f-newServicePhoto'){ handlePhotoFiles(t.files, 'newServicePhotoIds', 'newServicePhotoUploading'); return; }
+    if(t.id==='f-editPhoto'){ handlePhotoFiles(t.files, 'editPhotoIds', 'editPhotoUploading'); return; }
+    if(/^f-hclosed-/.test(t.id)){
+      var w = t.id.split('-')[2];
+      f['hclosed_'+w] = t.checked;
+      var openEl=document.getElementById('f-hopen-'+w), closeEl=document.getElementById('f-hclose-'+w);
+      if(openEl) openEl.disabled = t.checked;
+      if(closeEl) closeEl.disabled = t.checked;
+      return;
+    }
+    if(/^f-hopen-/.test(t.id)){ f['hopen_'+t.id.split('-')[2]] = t.value; return; }
+    if(/^f-hclose-/.test(t.id)){ f['hclose_'+t.id.split('-')[2]] = t.value; return; }
+  }
+
+  document.addEventListener('click', handleClick);
+  document.addEventListener('input', handleInput);
+  document.addEventListener('change', handleChange);
+
+  render();
+  connectDb();
+})();
+</script>
+</body>
+</html>
